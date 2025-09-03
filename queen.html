@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday, Princess</title>
+  <link rel="icon" type="image/png" href="birthday tune\VP.png">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Emilys+Candy&family=Sail&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(to bottom, #ff9a9e, #fad0c4, #d8b4fe);
+      min-height: 100vh;
+      font-family: 'Sail', cursive;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0;
+      margin: 0;
+      overflow-x: hidden;
+    }
+
+    .header {
+      text-align: center;
+      padding: 2rem 0;
+      z-index: 10;
+    }
+
+    .header h1 {
+      font-family: 'Emilys Candy', cursive;
+    }
+
+    .hearts-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 40px;
+      padding: 20px 0;
+      width: 100%;
+      max-width: 1400px;
+      flex: 1;
+    }
+
+    .heart-row {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      width: 100%;
+    }
+
+    .heart-wrapper {
+      position: relative;
+      width: 240px; /* Adjusted for larger hearts */
+      height: 240px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .heart {
+      animation: pulse 1s infinite;
+      position: absolute;
+      width: 150px; /* Increased size */
+      height: 150px;
+      background: #ff0000;
+      transform: rotate(-45deg);
+      z-index: 15;
+      box-shadow: 0 0 20px rgba(255, 0, 0, 0.7);
+    }
+
+    .heart:hover {
+      animation: pulse 0.5s infinite;
+    }
+
+    .heart::before,
+    .heart::after {
+      content: '';
+      position: absolute;
+      width: 150px;
+      height: 150px;
+      background: #ff0000;
+      border-radius: 75px; /* Half of width to keep circular */
+      z-index: 15;
+    }
+
+    .heart::before {
+      top: -75px; /* Half of the heart's height to position correctly */
+      left: 0;
+    }
+
+    .heart::after {
+      left: 75px; /* Half of the heart's width to position correctly */
+      top: 0;
+    }
+
+    .heart-text {
+      position: absolute;
+      top: 40%; /* Centered better on the heart */
+      left: 65%;
+      transform: translate(-50%, -50%) rotate(45deg);
+      color: #ffffff;
+      font-family: 'Sail', cursive;
+      font-size: 1.4rem;
+      text-align: center;
+      width: 80%;
+      text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+      z-index: 20;
+      text-decoration: none;
+    }
+
+    .heart:hover .heart-text {
+      color: #facc15;
+    }
+
+    .small-heart {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      background: #f472b6;
+      transform: rotate(-45deg);
+      z-index: 18;
+      box-shadow: 0 0 10px rgba(244, 114, 182, 0.7);
+      transition: background 0.3s ease;
+    }
+
+    .small-heart:hover {
+      background: #ff0000;
+    }
+
+    .small-heart::before,
+    .small-heart::after {
+      content: '';
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      background: #f472b6;
+      border-radius: 25px;
+      z-index: 18;
+      transition: background 0.3s ease;
+    }
+
+    .small-heart::before {
+      top: -25px;
+      left: 0;
+    }
+
+    .small-heart::after {
+      left: 25px;
+      top: 0;
+    }
+
+    .small-heart:hover::before,
+    .small-heart:hover::after {
+      background: #ff0000;
+    }
+
+    .small-heart a {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(45deg);
+      color: #ffffff;
+      font-family: 'Emilys Candy', cursive;
+      font-size: 1.2rem;
+      text-align: center;
+      text-decoration: none;
+      z-index: 20;
+    }
+
+    .small-heart:hover a {
+      color: #facc15;
+    }
+
+    @keyframes pulse {
+      0% { transform: rotate(-45deg) scale(1); }
+      50% { transform: rotate(-45deg) scale(1.05); }
+      100% { transform: rotate(-45deg) scale(1); }
+    }
+  </style>
+</head>
+<body>
+  <audio id="backgroundMusic" loop>
+    <source src="Songs/Tum Hi Ho.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <div class="header">
+    <h1 class="text-5xl md:text-7xl font-['Emilys_Candy'] text-pink-600">Queen of my Heart</h1>
+  </div>
+
+  <div class="hearts-container">
+    <!-- Row 1: 5 Hearts -->
+    <div class="heart-row">
+      <div class="heart-wrapper">
+        <div class="heart">
+          <span class="heart-text" data-default="Name" data-hover="Valerie Sergeevna Gavrilova">Name</span>
+        </div>
+      </div>
+      <div class="heart-wrapper">
+        <div class="heart">
+          <span class="heart-text" data-default="Born at" data-hover="June 17 2005, 01:30, the city of Vidnoye, Moscow, Russia">Born at</span>
+        </div>
+      </div>
+      <div class="heart-wrapper">
+        <div class="heart">
+          <span class="heart-text" data-default="Favorite Color" data-hover="Pink and white, like roses">Favorite Color</span>
+        </div>
+      </div>
+      <div class="heart-wrapper">
+        <div class="heart">
+          <span class="heart-text" data-default="Favourite fruit" data-hover="Strawberry, Queen of sweetness.">Favourite fruit.</span>
+        </div>
+      </div>
+      <div class="heart-wrapper">
+        <div class="heart">
+          <span class="heart-text" data-default="Favorite Dessert" data-hover="Chocolates and Ice-creams">Favorite Dessert</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 2: 5 Hearts -->
+    <div class="heart-row">
+      <div class="heart-wrapper">
+        <div class="heart">
+          <span class="heart-text" data-default="Favourite Song" data-hover="Perfect, by Ed Sheeran">Favourite Song</span>
+        </div>
+      </div>
+      <div class="heart-wrapper">
+        <div class="heart">
+          <span class="heart-text" data-default="Favourite Novel" data-hover="Consuelo, by George Sand">Favourite Novel</span>
+        </div>
+      </div>
+      <div class="heart-wrapper">
+        <div class="heart">
+          <span class="heart-text" data-default="Song, she associated with me." data-hover="Insatiable">Song, she associated with me.</span>
+        </div>
+      </div>
+      <div class="heart-wrapper">
+        <div class="heart">
+          <span class="heart-text" data-default="Dream Destination" data-hover="Paris">Dream Destination</span>
+        </div>
+      </div>
+      <div class="heart-wrapper">
+        <div class="heart">
+          <span class="heart-text" data-default="Novel character association" data-hover="Count Rudolstadt">Novel character association</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 3: 4 Hearts -->
+    <div class="heart-row">
+      <div class="heart-wrapper">
+        <div class="heart">
+          <span class="heart-text" data-default="First text" data-hover="28th Nov 2024 on Tandem">First text</span>
+        </div>
+      </div>
+      <div class="heart-wrapper">
+        <div class="heart">
+          <span class="heart-text" data-default="First time proposal" data-hover="2 March 2025 22:00 (Russia) & 3 March 2025 00:30(India)">First time proposal</span>
+        </div>
+      </div>
+      <div class="heart-wrapper">
+        <div class="heart">
+          <span class="heart-text" data-default="First Call" data-hover="23 December 2024">First Call</span>
+        </div>
+      </div>
+      <div class="heart-wrapper">
+        <div class="heart">
+          <span class="heart-text" data-default="Her Address" data-hover="Hihi, I know, but better keep it confidential">Her Address</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="small-heart">
+    <a href="index.html">Home</a>
+  </div>
+
+  <script>
+    const hearts = document.querySelectorAll('.heart');
+    hearts.forEach(heart => {
+      const heartText = heart.querySelector('.heart-text');
+      heart.addEventListener('mouseenter', () => {
+        heartText.textContent = heartText.dataset.hover;
+      });
+      heart.addEventListener('mouseleave', () => {
+        heartText.textContent = heartText.dataset.default;
+      });
+    });
+    // Background music control
+    const audio = document.getElementById('backgroundMusic');
+    document.body.addEventListener('click', () => {
+    if (audio.paused) {
+      audio.play().catch(error => {
+        console.error('Error playing audio:', error);
+      });
+    }
+  }, { once: true });
+  </script>
+</body>
+</html>

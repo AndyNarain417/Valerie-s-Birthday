@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday, Princess - I</title>
+  <link rel="icon" type="image/png" href="birthday tune\VP.png">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Dancing+Script&family=Londrina+Shadow&family=Emilys+Candy&family=Sail&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      background: linear-gradient(to bottom, #ff9a9e, #fad0c4, #d8b4fe);
+      min-height: 100vh;
+      font-family: 'Sail', cursive;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+      position: relative;
+    }
+
+    .header {
+      text-align: center;
+      padding: 2rem 0;
+      z-index: 10;
+    }
+
+    .header h1 {
+      font-family: 'Emilys Candy', cursive;
+    }
+
+    .header p {
+      font-family: 'Sail', cursive;
+    }
+
+    .music-square {
+      position: fixed;
+      bottom: 150px;
+      right: 20px;
+      left: auto;
+      width: 150px;
+      height: 150px;
+      background: #ffffff;
+      border: 2px solid #f472b6;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(244, 114, 182, 0.7);
+      z-index: 12;
+      animation: float 4s ease-in-out infinite;
+      overflow: hidden;
+    }
+
+    .music-square img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .music-bars {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 30px;
+      display: flex;
+      justify-content: space-around;
+      align-items: flex-end;
+      padding: 5px;
+    }
+
+    .bar {
+      width: 8px;
+      height: 5px;
+      background: #126be8;
+      animation: music-bar 0.8s ease-in-out infinite;
+    }
+
+    .bar:nth-child(2) { animation-delay: 0.2s; }
+    .bar:nth-child(3) { animation-delay: 0.4s; }
+    .bar:nth-child(4) { animation-delay: 0.6s; }
+    .bar:nth-child(5) { animation-delay: 0.8s; }
+
+    .hearts-shower {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 5;
+      pointer-events: none;
+    }
+
+    .heart-shower {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: #ff0000;
+      transform: rotate(-45deg);
+      animation: heart-shower 3.5s linear infinite;
+      box-shadow: 0 0 8px rgba(244, 114, 182, 0.7);
+    }
+
+    .heart-shower::before,
+    .heart-shower::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: #ff0000;
+      border-radius: 10px;
+    }
+
+    .heart-shower::before {
+      top: -10px;
+      left: 0;
+    }
+
+    .heart-shower::after {
+      left: 10px;
+      top: 0;
+    }
+
+    .heart-shower:nth-child(1) { left: 12%; animation-delay: 0.5s; }
+    .heart-shower:nth-child(2) { left: 22%; animation-delay: 1.8s; }
+    .heart-shower:nth-child(3) { left: 32%; animation-delay: 0.9s; }
+    .heart-shower:nth-child(4) { left: 42%; animation-delay: 2.3s; }
+    .heart-shower:nth-child(5) { left: 52%; animation-delay: 0.3s; }
+    .heart-shower:nth-child(6) { left: 62%; animation-delay: 1.1s; }
+    .heart-shower:nth-child(7) { left: 72%; animation-delay: 0.6s; }
+    .heart-shower:nth-child(8) { left: 82%; animation-delay: 2.5s; }
+    .heart-shower:nth-child(9) { left: 92%; animation-delay: 1.5s; }
+    .heart-shower:nth-child(10) { left: 17%; animation-delay: 0.7s; }
+
+    .jar-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 2rem;
+      z-index: 10;
+    }
+
+    .glass-jar {
+      position: relative;
+      width: 300px;
+      height: 300px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.5), 0 0 15px rgba(244, 114, 182, 0.7);
+      cursor: pointer;
+      animation: float 4s ease-in-out infinite;
+      overflow: hidden;
+    }
+
+    .glass-jar::before {
+      content: '';
+      position: absolute;
+      top: -40px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 120px;
+      height: 40px;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 10px 10px 0 0;
+      box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.5);
+    }
+
+    .glass-jar:hover {
+      background: rgba(255, 255, 255, 0.4);
+    }
+
+    .paper-slip {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      background: #facc15;
+      clip-path: path('M20 40 Q10 30 0 20 Q10 10 20 0 Q30 10 40 20 Q30 30 20 40 Z');
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+      animation: float-slip 3s ease-in-out infinite;
+    }
+
+    .paper-slip:nth-child(1) { top: 60px; left: 80px; animation-delay: 0s; }
+    .paper-slip:nth-child(2) { top: 80px; left: 180px; animation-delay: 0.5s; }
+    .paper-slip:nth-child(3) { top: 150px; left: 60px; animation-delay: 1s; }
+    .paper-slip:nth-child(4) { top: 180px; left: 150px; animation-delay: 1.5s; }
+    .paper-slip:nth-child(5) { top: 120px; left: 210px; animation-delay: 2s; }
+    .paper-slip:nth-child(6) { top: 190px; left: 90px; animation-delay: 2.5s; }
+    .paper-slip:nth-child(7) { top: 110px; left: 140px; animation-delay: 3s; }
+
+    .slip-display {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 20;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s ease;
+    }
+
+    .slip-display.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .slip-content {
+      width: 80%;
+      max-width: 500px;
+      background: #f472b6;
+      border-radius: 10px;
+      padding: 2rem;
+      font-family: 'Sail', cursive;
+      font-size: 1.2rem;
+      color: #ffffff;
+      text-align: center;
+      box-shadow: 0 0 20px rgba(244, 114, 182, 0.7);
+      position: relative;
+    }
+
+    .slip-content:hover {
+      background: #ff0000;
+      color: #facc15;
+    }
+
+    .exit-button {
+      margin-top: 1rem;
+      padding: 0.5rem 1rem;
+      background: linear-gradient(135deg, #ffd700, #b8860b);
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      font-family: 'Sail', cursive;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
+      transition: transform 0.3s ease;
+    }
+
+    .exit-button:hover {
+      transform: scale(1.05);
+    }
+
+    .heart-link {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 40px;
+      height: 40px;
+      background: #f472b6;
+      transform: rotate(-45deg);
+      z-index: 10;
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(244, 114, 182, 0.7);
+      animation: pulse 2s ease-in-out infinite, float 4s ease-in-out infinite;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-decoration: none;
+      border-radius: 0;
+    }
+
+    .heart-link::before,
+    .heart-link::after {
+      content: '';
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      background: #f472b6;
+      border-radius: 20px;
+      z-index: 9;
+    }
+
+    .heart-link::before {
+      top: -20px;
+      left: 0;
+    }
+
+    .heart-link::after {
+      left: 20px;
+      top: 0;
+    }
+
+    .heart-link span {
+      transform: rotate(45deg);
+      color: #facc15;
+      font-family: 'Emilys Candy', cursive;
+      font-size: 1.5rem;
+      font-size: 25px;
+      font-weight: bold;
+      text-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
+      z-index: 13;
+    }
+
+    .heart-link:hover {
+      animation: small-pulse 0.7s infinite;
+      background: #ff0000;
+    }
+
+    .heart-link:hover::before,
+    .heart-link:hover::after {
+      background: #ff0000;
+    }
+
+    .spheres-container {
+      position: fixed;
+      bottom: 10px;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      z-index: 10;
+      padding: 0 20px;
+    }
+
+    .rainbow-sphere {
+      position: relative;
+      background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.3) 70%);
+      border: 2px solid rgba(255, 255, 255, 0.5);
+      border-radius: 50%;
+      box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.6), 0 0 20px rgba(255, 255, 255, 0.3);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Emilys Candy', cursive;
+      font-size: 2rem;
+      font-weight: bold;
+      color: #ffffff;
+      text-shadow: 0 0 8px rgba(0, 0, 0, 0.8);
+      animation: float-sphere 3.5s ease-in-out infinite;
+      overflow: hidden;
+    }
+
+    .rainbow-sphere::before {
+      content: '';
+      position: absolute;
+      top: 10%;
+      left: 10%;
+      width: 30%;
+      height: 30%;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.9), transparent);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .rainbow-sphere:nth-child(1) {
+      width: 100px;
+      height: 100px;
+      animation: glow-red 2.5s ease-in-out infinite, float-sphere 3.5s ease-in-out infinite;
+      animation-delay: 0.3s, 0s;
+    }
+
+    .rainbow-sphere:nth-child(2) {
+      width: 80px;
+      height: 80px;
+      animation: glow-orange 3s ease-in-out infinite, float-sphere 3.5s ease-in-out infinite;
+      animation-delay: 1.1s, 0.2s;
+    }
+
+    .rainbow-sphere:nth-child(3) {
+      width: 120px;
+      height: 120px;
+      animation: glow-yellow 2.8s ease-in-out infinite, float-sphere 3.5s ease-in-out infinite;
+      animation-delay: 0.7s, 0.4s;
+    }
+
+    .rainbow-sphere:nth-child(4) {
+      width: 90px;
+      height: 90px;
+      animation: glow-green 3.2s ease-in-out infinite, float-sphere 3.5s ease-in-out infinite;
+      animation-delay: 1.4s, 0.6s;
+    }
+
+    .rainbow-sphere:nth-child(5) {
+      width: 110px;
+      height: 110px;
+      animation: glow-blue 2.6s ease-in-out infinite, float-sphere 3.5s ease-in-out infinite;
+      animation-delay: 0.9s, 0.8s;
+    }
+
+    .rainbow-sphere:nth-child(6) {
+      width: 70px;
+      height: 70px;
+      animation: glow-indigo 3.1s ease-in-out infinite, float-sphere 3.5s ease-in-out infinite;
+      animation-delay: 1.2s, 1s;
+    }
+
+    .rainbow-sphere:nth-child(7) {
+      width: 130px;
+      height: 130px;
+      animation: glow-violet 2.9s ease-in-out infinite, float-sphere 3.5s ease-in-out infinite;
+      animation-delay: 0.5s, 1.2s;
+    }
+
+    @keyframes heart-shower {
+      0% { transform: translateY(-10vh) rotate(-45deg) scale(1); opacity: 1; }
+      50% { transform: translateY(50vh) rotate(-45deg) scale(1.1); opacity: 0.8; }
+      100% { transform: translateY(110vh) rotate(-45deg) scale(0.9); opacity: 0; }
+    }
+
+    @keyframes music-bar {
+      0% { height: 5px; }
+      50% { height: 20px; }
+      100% { height: 5px; }
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0); }
+    }
+
+    @keyframes float-slip {
+      0% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-5px) rotate(5deg); }
+      100% { transform: translateY(0) rotate(0deg); }
+    }
+
+    @keyframes float-sphere {
+      0% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-10px) rotate(5deg); }
+      100% { transform: translateY(0) rotate(0deg); }
+    }
+
+    @keyframes glow-red {
+      0%, 100% { box-shadow: 0 0 15px rgba(255, 0, 0, 0.6), inset 0 0 20px rgba(255, 0, 0, 0.4), 0 0 30px rgba(255, 0, 0, 0.3); }
+      50% { box-shadow: 0 0 30px rgba(255, 0, 0, 1), inset 0 0 30px rgba(255, 0, 0, 0.8), 0 0 50px rgba(255, 0, 0, 0.5); }
+    }
+
+    @keyframes glow-orange {
+      0%, 100% { box-shadow: 0 0 15px rgba(255, 165, 0, 0.6), inset 0 0 20px rgba(255, 165, 0, 0.4), 0 0 30px rgba(255, 165, 0, 0.3); }
+      50% { box-shadow: 0 0 30px rgba(255, 165, 0, 1), inset 0 0 30px rgba(255, 165, 0, 0.8), 0 0 50px rgba(255, 165, 0, 0.5); }
+    }
+
+    @keyframes glow-yellow {
+      0%, 100% { box-shadow: 0 0 15px rgba(255, 255, 0, 0.6), inset 0 0 20px rgba(255, 255, 0, 0.4), 0 0 30px rgba(255, 255, 0, 0.3); }
+      50% { box-shadow: 0 0 30px rgba(255, 255, 0, 1), inset 0 0 30px rgba(255, 255, 0, 0.8), 0 0 50px rgba(255, 255, 0, 0.5); }
+    }
+
+    @keyframes glow-green {
+      0%, 100% { box-shadow: 0 0 15px rgba(0, 128, 0, 0.6), inset 0 0 20px rgba(0, 128, 0, 0.4), 0 0 30px rgba(0, 128, 0, 0.3); }
+      50% { box-shadow: 0 0 30px rgba(0, 128, 0, 1), inset 0 0 30px rgba(0, 128, 0, 0.8), 0 0 50px rgba(0, 128, 0, 0.5); }
+    }
+
+    @keyframes glow-blue {
+      0%, 100% { box-shadow: 0 0 15px rgba(0, 0, 255, 0.6), inset 0 0 20px rgba(0, 0, 255, 0.4), 0 0 30px rgba(0, 0, 255, 0.3); }
+      50% { box-shadow: 0 0 30px rgba(0, 0, 255, 1), inset 0 0 30px rgba(0, 0, 255, 0.8), 0 0 50px rgba(0, 0, 255, 0.5); }
+    }
+
+    @keyframes glow-indigo {
+      0%, 100% { box-shadow: 0 0 15px rgba(75, 0, 130, 0.6), inset 0 0 20px rgba(75, 0, 130, 0.4), 0 0 30px rgba(75, 0, 130, 0.3); }
+      50% { box-shadow: 0 0 30px rgba(75, 0, 130, 1), inset 0 0 30px rgba(75, 0, 130, 0.8), 0 0 50px rgba(75, 0, 130, 0.5); }
+    }
+
+    @keyframes glow-violet {
+      0%, 100% { box-shadow: 0 0 15px rgba(238, 130, 238, 0.6), inset 0 0 20px rgba(238, 130, 238, 0.4), 0 0 30px rgba(238, 130, 238, 0.3); }
+      50% { box-shadow: 0 0 30px rgba(238, 130, 238, 1), inset 0 0 30px rgba(238, 130, 238, 0.8), 0 0 50px rgba(238, 130, 238, 0.5); }
+    }
+  </style>
+</head>
+<body>
+  <audio id="bg-music" autoplay loop muted>
+    <source src="Songs/Dandelions.mp3" type="audio/mp3">
+    Your browser does not support the audio element.
+  </audio>
+
+  <div class="hearts-shower">
+    <div class="heart-shower"></div>
+    <div class="heart-shower"></div>
+    <div class="heart-shower"></div>
+    <div class="heart-shower"></div>
+    <div class="heart-shower"></div>
+    <div class="heart-shower"></div>
+    <div class="heart-shower"></div>
+    <div class="heart-shower"></div>
+    <div class="heart-shower"></div>
+    <div class="heart-shower"></div>
+  </div>
+
+  <div class="music-square">
+    <img src="Valerie 7/4.jpg" alt="Her Photo">
+    <div class="music-bars">
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+    </div>
+  </div>
+
+  <div class="header">
+    <h1 class="text-5xl md:text-7xl font-['Emilys_Candy'] text-pink-600">I - Insight of Moments with Princess</h1>
+    <p class="text-2xl mt-2 text-white">Click the jar 7 times to reveal 7 unforgettable moments with Princess Valerie.</p>
+  </div>
+
+  <div class="jar-container">
+    <div class="glass-jar" id="glass-jar">
+      <div class="paper-slip"></div>
+      <div class="paper-slip"></div>
+      <div class="paper-slip"></div>
+      <div class="paper-slip"></div>
+      <div class="paper-slip"></div>
+      <div class="paper-slip"></div>
+      <div class="paper-slip"></div>
+    </div>
+  </div>
+
+  <div class="slip-display" id="slip-display">
+    <div class="slip-content" id="slip-content">
+      <p id="slip-text"></p>
+      <button class="exit-button" id="exit-button">Exit</button>
+    </div>
+  </div>
+
+  <div class="spheres-container">
+    <div class="rainbow-sphere">V</div>
+    <div class="rainbow-sphere">A</div>
+    <div class="rainbow-sphere">L</div>
+    <div class="rainbow-sphere">E</div>
+    <div class="rainbow-sphere">R</div>
+    <div class="rainbow-sphere">I</div>
+    <div class="rainbow-sphere">E</div>
+  </div>
+
+  <a href="e2.html" class="heart-link"><span>E</span></a>
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+  <script>
+    const audio = document.getElementById('bg-music');
+    const glassJar = document.getElementById('glass-jar');
+    const slipDisplay = document.getElementById('slip-display');
+    const slipText = document.getElementById('slip-text');
+    const exitButton = document.getElementById('exit-button');
+    const header = document.querySelector('.header');
+    const musicSquare = document.querySelector('.music-square');
+    const heartsShower = document.querySelector('.hearts-shower');
+    const heartLink = document.querySelector('.heart-link');
+    const spheresContainer = document.querySelector('.spheres-container');
+
+    let isAudioUnmuted = false;
+
+    // Function to unmute and play audio on first click
+    function unmuteAudio() {
+      if (!isAudioUnmuted) {
+        audio.muted = false;
+        audio.volume = 0.05; // Set to minimum volume from the start
+        audio.play().then(() => {
+          console.log('Audio unmuted and playing successfully at volume:', audio.volume);
+          isAudioUnmuted = true;
+          // Remove the click event listener after successful unmute
+          document.removeEventListener('click', unmuteAudio);
+        }).catch(error => {
+          console.error('Audio playback failed:', error.message);
+        });
+      }
+    }
+
+    // Add click event listener to the entire document for single click
+    document.addEventListener('click', unmuteAudio);
+
+    // Define the 7 paper slips with ~50-word messages
+    const slips = [
+      {
+        text: "March 2nd, 2025, Russia at 22:00, our beginning. That night, I felt pure magic. You flooded me with love messages, shared our first photo, and chose me as your man. I was so happy I forgot I had an exam the next day! That sleepless night gave me the prettiest, most caring princess in the universe. I’ll never forget how it felt to be truly loved for the first time. That moment wasn't just special it was the start of forever bond. My heart knew then: you’re the one I’ve been waiting for."
+      },
+      {
+        text: "Our late-night Murakami reading sessions were a beautiful start to our bond. Even after dating we stopped, but those quiet, thoughtful nights stayed close to my heart. Those stories and talks framed our connection. One day, we’ll read together again not on call sitting side by side, turning pages, dreaming big, and turning dreams to life. With you, even silence speaks of love. I believe in our shared world of imagination and emotions. Murakami brought us closer, but love will take us further. Let’s create our own magical story just you, me, and a book filled with dreams."
+      },
+      {
+        text: "Rehearsing for your English exam felt fun, sweet, and close. I didn’t know then that helping you would turn into building of trust with you. That trust, that comfort, was the seed of something bigger. Now I believe one day our dating will become a marriage. No borders, no barriers, just us building unforgettable moments. Every small interaction shaped the love story we have now. It all started with English questions, laughter, and time spent together. I see a future with you, Valerie, and I want it all—with you by my side, Will you be my lifetime English partner as a life partner?"
+      },
+      {
+        text: "The night of pinky promises will always stay in my heart. You spoke about your 1st boyfriend, and I feared I might lose you. But when you chose to trust me, to stay, I felt the world pause. Even your “I hate India and Indians” broke me until you showed me your heart and trust in me. You didn’t just said, you made promises to never leave me, to always be mine. That night, I realized how powerful your love is. Pinky promises may be small, but that night, they became the strongest bond of my life."
+      },
+      {
+        text: "My 21st birthday was the most memorable day of my life you changed my dull day with love and perfectness, it was all because of you I ever felt so special, my princess. From your heartfelt first wish to the stunning Jasmine photoshoot, your effort in dressing up, doing your makeup, and creating magic just for me made it the most beautiful birthday It's the most pleasent memory of mylife. This day will always be in my heart."
+      },
+      {
+        text: "Seeing your video on Russian history was full of fun. You were adorable in every costume, confident in every role. From your crab apple German video to your school dance, I saw your world, your talents, your soul. That day I realized you’re everything I’ve ever dreamed of. My perfect girl. You said your husband will be your Mr. Perfect, but to me, you are my Mrs. Perfect. I want to be your Mr. Perfect my Mrs. Perfect."
+      },
+      {
+        text: "Every night with you is unforgettable our video calls, breath-holding games, solving maths, gazing challenge. Even across miles, I'm waiting for the day when we'll live together and spend whole nights doing all exciting activities together. Valerie, I want to make all lifetime memories with you, enjoy every moment with you, no matter which barriers we've to face (communication barrier, distance, language, culture) we'll surpass everything and prove love has no barriers, it is a feeling across distances. You know when you are feeling down and upset, I get a feeling of sadness as well. It's neither any miracle, nor any magic it's the power of love Valerie, it's the power of love. Try to feel it with your heart everything will be cleared."
+      }
+    ];
+
+    let availableSlips = [...slips];
+    let viewedSlips = [];
+
+    // Function to hide other elements
+    function hideElements() {
+      header.style.display = 'none';
+      musicSquare.style.display = 'none';
+      heartsShower.style.display = 'none';
+      glassJar.style.display = 'none';
+      heartLink.style.display = 'none';
+      spheresContainer.style.display = 'none';
+    }
+
+    // Function to show other elements
+    function showElements() {
+      header.style.display = 'block';
+      musicSquare.style.display = 'block';
+      heartsShower.style.display = 'block';
+      glassJar.style.display = 'block';
+      heartLink.style.display = 'flex';
+      spheresContainer.style.display = 'flex';
+    }
+
+    // Click handler for the glass jar
+    glassJar.addEventListener('click', () => {
+      if (availableSlips.length === 0) {
+        // Reset the slips if all have been viewed
+        availableSlips = [...slips];
+        viewedSlips = [];
+      }
+
+      // Randomly select a slip
+      const randomIndex = Math.floor(Math.random() * availableSlips.length);
+      const selectedSlip = availableSlips[randomIndex];
+
+      // Display the slip
+      slipText.textContent = selectedSlip.text;
+      slipDisplay.classList.add('active');
+
+      // Hide other elements
+      hideElements();
+
+      // Ensure audio continues playing unmuted at minimum volume
+      if (isAudioUnmuted) {
+        audio.volume = 0.05; // Keep at minimum volume
+        console.log('Volume set to minimum:', audio.volume);
+        audio.play().then(() => {
+          console.log('Audio playing successfully at volume:', audio.volume);
+        }).catch(error => {
+          console.error('Audio playback failed:', error.message);
+        });
+      }
+
+      // Remove the slip from available slips and add to viewed slips
+      viewedSlips.push(selectedSlip);
+      availableSlips.splice(randomIndex, 1);
+
+      // Update the visual number of slips in the jar
+      const slipsInJar = document.querySelectorAll('.paper-slip');
+      slipsInJar[availableSlips.length].style.display = 'none';
+    });
+
+    // Exit button handler
+    exitButton.addEventListener('click', () => {
+      slipDisplay.classList.remove('active');
+      showElements();
+
+      // Restore the slip to the jar visually
+      const slipsInJar = document.querySelectorAll('.paper-slip');
+      slipsInJar[availableSlips.length].style.display = 'block';
+
+      // Ensure volume remains at minimum
+      if (isAudioUnmuted) {
+        audio.volume = 0.05; // Keep at minimum volume
+        console.log('Volume set to minimum:', audio.volume);
+        audio.play().then(() => {
+          console.log('Audio playing successfully at volume:', audio.volume);
+        }).catch(error => {
+          console.error('Audio playback failed:', error.message);
+        });
+      }
+    });
+
+    // Ensure audio loads and plays on page load
+    document.addEventListener('DOMContentLoaded', () => {
+      console.log('Page loaded, attempting to load audio');
+      audio.load();
+      audio.play().then(() => {
+        console.log('Audio autoplay started (muted)');
+      }).catch(error => {
+        console.error('Audio autoplay failed:', error.message);
+      });
+    });
+
+    function triggerConfetti() {
+      confetti({
+        particleCount: 50,
+        spread: 60,
+        origin: { x: 0.95, y: 0.9 },
+        colors: ['#ff6b6b', '#f472b6', '#a7f3d0', '#facc15']
+      });
+    }
+  </script>
+</body>
+</html>

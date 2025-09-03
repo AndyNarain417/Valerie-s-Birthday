@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday, Princess - L</title>
+  <link rel="icon" type="image/png" href="birthday tune\VP.png">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Dancing+Script&family=Londrina+Shadow&family=Emilys+Candy&family=Sail&family=Estonia&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --letter-top: 50px;
+      --letter-left: 0px;
+      --golden-heart-top-offset: 60px;
+      --golden-heart-left-offset: 49px;
+    }
+
+    body {
+      background: linear-gradient(to bottom, #ff9a9e, #fad0c4, #d8b4fe);
+      min-height: 100vh;
+      font-family: 'Sail', cursive;
+      overflow-x: hidden;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 2rem;
+      padding-bottom: 200px;
+    }
+
+    .main-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      max-width: 100vw;
+      min-height: calc(100vh - 100px);
+      box-sizing: border-box;
+    }
+
+    .header {
+      text-align: center;
+      padding: 2rem 0;
+      z-index: 10;
+    }
+
+    .header h1 {
+      font-family: 'Emilys Candy', cursive;
+    }
+
+    .header p {
+      font-family: 'Sail', cursive;
+    }
+
+    .music-square {
+      position: fixed;
+      bottom: 130px;
+      right: 20px;
+      width: 150px;
+      height: 150px;
+      background: #ffffff;
+      border: 2px solid #f472b6;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(244, 114, 182, 0.7);
+      z-index: 12;
+      animation: float 4s ease-in-out infinite;
+      overflow: hidden;
+    }
+
+    .music-square img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .music-bars {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 30px;
+      display: flex;
+      justify-content: space-around;
+      align-items: flex-end;
+      padding: 5px;
+    }
+
+    .bar {
+      width: 8px;
+      height: 5px;
+      background: #126be8;
+      animation: music-bar 0.8s ease-in-out infinite;
+    }
+
+    .bar:nth-child(2) { animation-delay: 0.2s; }
+    .bar:nth-child(3) { animation-delay: 0.4s; }
+    .bar:nth-child(4) { animation-delay: 0.6s; }
+    .bar:nth-child(5) { animation-delay: 0.8s; }
+
+    .stars {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 5;
+      pointer-events: none;
+    }
+
+    .star {
+      position: absolute;
+      border-radius: 50%;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+      animation: star-shower 3s linear infinite;
+    }
+
+    .star.red {
+      width: 15px;
+      height: 15px;
+      background: #ff0000;
+    }
+
+    .star.yellow {
+      width: 12px;
+      height: 12px;
+      background: #facc15;
+    }
+
+    .star.white {
+      width: 10px;
+      height: 10px;
+      background: #ffffff;
+    }
+
+    .star::before,
+    .star::after,
+    .star .spoke {
+      content: '';
+      position: absolute;
+      background: inherit;
+      top: 50%;
+      left: 50%;
+      transform-origin: center;
+    }
+
+    .star.red::before, .star.red::after, .star.red .spoke {
+      width: 18px;
+      height: 3px;
+    }
+
+    .star.yellow::before, .star.yellow::after, .star.yellow .spoke {
+      width: 14px;
+      height: 2.5px;
+    }
+
+    .star.white::before, .star.white::after, .star.white .spoke {
+      width: 12px;
+      height: 2px;
+    }
+
+    .star::before { transform: translate(-50%, -50%) rotate(0deg); }
+    .star::after { transform: translate(-50%, -50%) rotate(72deg); }
+    .star .spoke:nth-child(1) { transform: translate(-50%, -50%) rotate(144deg); }
+    .star .spoke:nth-child(2) { transform: translate(-50%, -50%) rotate(216deg); }
+    .star .spoke:nth-child(3) { transform: translate(-50%, -50%) rotate(288deg); }
+
+    .star:nth-child(3n+1) { left: 10%; animation-delay: 0s; }
+    .star:nth-child(3n+2) { left: 20%; animation-delay: 0.5s; }
+    .star:nth-child(3n+3) { left: 30%; animation-delay: 1s; }
+    .star:nth-child(3n+4) { left: 40%; animation-delay: 1.5s; }
+    .star:nth-child(3n+5) { left: 50%; animation-delay: 2s; }
+    .star:nth-child(3n+6) { left: 60%; animation-delay: 2.5s; }
+    .star:nth-child(3n+7) { left: 70%; animation-delay: 0.2s; }
+    .star:nth-child(3n+8) { left: 80%; animation-delay: 0.7s; }
+    .star:nth-child(3n+9) { left: 90%; animation-delay: 1.2s; }
+    .star:nth-child(3n+10) { left: 15%; animation-delay: 1.7s; }
+
+    .letter-container {
+      position: relative;
+      width: 250px;
+      height: 250px;
+      top: var(--letter-top);
+      left: var(--letter-left);
+      z-index: 10;
+      perspective: 1000px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      transition: all 1.2s ease-in-out;
+      max-width: 100%;
+    }
+
+    .letter-container.open {
+      width: 100%;
+      max-width: 90vw;
+      justify-content: center;
+      gap: 20px;
+      transform: translateY(150px);
+    }
+
+    .letter {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transition: all 1.2s ease-in-out;
+      cursor: pointer;
+      background: #ff0000;
+      clip-path: path('M125,37.5 C187.5,0 250,37.5 250,100 C250,162.5 187.5,225 125,250 C62.5,225 0,162.5 0,100 C0,37.5 62.5,0 125,37.5 Z');
+      box-shadow: 0 0 20px rgba(255, 0, 0, 0.7);
+    }
+
+    .letter.open {
+      width: 45vw;
+      max-width: 400px;
+      min-width: 300px;
+      height: 600px;
+      clip-path: none;
+      border-radius: 10px;
+      transform: none;
+      background: #ff0000;
+      box-shadow: 
+        -10px 0 10px -5px rgba(0, 0, 0, 0.2),
+        10px 0 10px -5px rgba(0, 0, 0, 0.2),
+        0 0 20px rgba(0, 0, 0, 0.3);
+      animation: unroll 1.2s ease-in-out;
+    }
+
+    .letter-content {
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s ease 0.7s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start; /* Changed to flex-start to align content at the top */
+      font-family: 'Sail', cursive;
+      font-size: 1.1rem;
+      color: #fff;
+      background: linear-gradient(135deg, #ffd700, #b8860b);
+      padding: 30px 15px 15px 15px; /* Increased top padding to ensure top content is visible */
+      text-align: center;
+      max-width: 370px;
+      max-height: 100%;
+      overflow-y: auto;
+      overflow-wrap: break-word;
+      box-sizing: border-box;
+      position: relative;
+    }
+
+    .letter.open .letter-content {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .close-button {
+      display: none;
+      margin-top: 20px;
+      padding: 8px 16px;
+      background: linear-gradient(135deg, #ffd700, #b8860b);
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      font-family: 'Sail', cursive;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
+      transition: transform 0.3s ease;
+    }
+
+    .close-button:hover {
+      transform: scale(1.05);
+    }
+
+    .letter.open .close-button {
+      display: block;
+    }
+
+    .letter-image {
+      display: none;
+      width: 45vw;
+      max-width: 400px;
+      min-width: 300px;
+      height: 600px;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 
+        -10px 0 10px -5px rgba(0, 0, 0, 0.2),
+        10px 0 10px -5px rgba(0, 0, 0, 0.2),
+        0 0 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .letter-container.open .letter-image {
+      display: block;
+      transform: none;
+    }
+
+    .golden-heart-wrapper {
+      position: absolute;
+      top: calc(45% + var(--golden-heart-top-offset));
+      left: calc(50% + var(--golden-heart-left-offset));
+      transform: translate(-50%, -50%);
+      width: 100px;
+      height: 100px;
+      cursor: pointer;
+      z-index: 20;
+    }
+
+    .golden-heart {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, #ffd700, #b8860b);
+      clip-path: path('M40,12 C60,0 80,12 80,32 C80,52 60,72 40,80 C20,72 0,52 0,32 C0,12 20,0 40,12 Z');
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.7), 2px 2px 5px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s ease;
+      animation: pulse 2s ease-in-out infinite;
+      transform: scale(0.5);
+      transform-origin: center;
+    }
+
+    .golden-heart-wrapper:hover .golden-heart {
+      transform: scale(0.55);
+    }
+
+    .letter.open .golden-heart-wrapper {
+      display: none;
+    }
+
+    .rose-border {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 120px;
+      z-index: 10;
+      overflow: hidden;
+    }
+
+    .rose-border.hidden {
+      display: none;
+    }
+
+    .rose-row {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 100"><g transform="translate(0, 40)"><rect x="27" y="30" width="6" height="50" fill="%23008000" /><path d="M30 20 Q40 10 50 20 Q40 30 30 20 Q35 25 30 30 Q25 25 30 20" fill="%23ff0000" transform="rotate(0 30 20)" /><path d="M30 20 Q40 10 50 20 Q40 30 30 20 Q35 25 30 30 Q25 25 30 20" fill="%23ff0000" transform="rotate(60 30 20)" /><path d="M30 20 Q40 10 50 20 Q40 30 30 20 Q35 25 30 30 Q25 25 30 20" fill="%23ff3333" transform="rotate(120 30 20)" /><path d="M30 20 Q40 10 50 20 Q40 30 30 20 Q35 25 30 30 Q25 25 30 20" fill="%23ff3333" transform="rotate(180 30 20)" /><path d="M30 20 Q40 10 50 20 Q40 30 30 20 Q35 25 30 30 Q25 25 30 20" fill="%23cc0000" transform="rotate(240 30 20)" /><path d="M30 20 Q40 10 50 20 Q40 30 30 20 Q35 25 30 30 Q25 25 30 20" fill="%23cc0000" transform="rotate(300 30 20)" /><circle cx="30" cy="20" r="4" fill="%23facc15" /><path d="M15 50 Q20 40 25 50 Q20 60 15 50 Q10 60 5 50 Q10 40 15 50" fill="%23008000" /><path d="M45 50 Q50 40 55 50 Q50 60 45 50 Q40 60 35 50 Q40 40 45 50" fill="%23008000" /></g></svg>') repeat-x;
+      background-size: 60px 100px;
+      background-position: bottom;
+      animation: group-move 5s ease-in-out infinite;
+    }
+
+    .rose-row div {
+      flex: 1;
+      height: 100%;
+      animation: wind-wave 3s ease-in-out infinite, bloom 4s ease-in-out infinite;
+      transform-origin: bottom center;
+    }
+
+    .rose-row div:nth-child(1) { transform: scale(0.9); animation-delay: 0s; }
+    .rose-row div:nth-child(2) { transform: scale(0.95); animation-delay: 0.2s; }
+    .rose-row div:nth-child(3) { transform: scale(1); animation-delay: 0.4s; }
+    .rose-row div:nth-child(4) { transform: scale(0.92); animation-delay: 0.6s; }
+    .rose-row div:nth-child(5) { transform: scale(0.98); animation-delay: 0.8s; }
+    .rose-row div:nth-child(6) { transform: scale(0.9); animation-delay: 1s; }
+    .rose-row div:nth-child(7) { transform: scale(0.97); animation-delay: 1.2s; }
+    .rose-row div:nth-child(8) { transform: scale(0.93); animation-delay: 1.4s; }
+    .rose-row div:nth-child(9) { transform: scale(0.95); animation-delay: 1.6s; }
+    .rose-row div:nth-child(10) { transform: scale(0.9); animation-delay: 1.8s; }
+    .rose-row div:nth-child(11) { transform: scale(0.96); animation-delay: 2s; }
+    .rose-row div:nth-child(12) { transform: scale(0.94); animation-delay: 2.2s; }
+    .rose-row div:nth-child(13) { transform: scale(0.92); animation-delay: 2.4s; }
+    .rose-row div:nth-child(14) { transform: scale(0.98); animation-delay: 2.6s; }
+
+     .heart-link {
+    position: fixed;
+    bottom: 60px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    background-color: #f472b6;
+    z-index: 10;
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(244, 114, 182, 0.9), 0 0 25px rgba(255, 255, 255, 0.4);
+    animation: pulse 2s ease-in-out infinite, float 4s ease-in-out infinite;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+  }
+  .heart-link::before,
+  .heart-link::after {
+    content: '';
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background-color: #f472b6;
+    border-radius: 20px;
+    z-index: 10;
+    transition: background-color 0.3s ease;
+  }
+  .heart-link::before {
+    top: -20px;
+    left: 0;
+  }
+  .heart-link::after {
+    left: 20px;
+    top: 0;
+    z-index: 9; /* Ensure sparkle is behind the letter */
+  }
+  .heart-link:hover {
+    animation: small-pulse 0.7s infinite;
+    background-color: #ff0000;
+  }
+  .heart-link:hover::before,
+  .heart-link:hover::after {
+    background-color: #ff0000;
+  }
+  .heart-link span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(45deg);
+    font-family: 'Emilys Candy', cursive;
+    font-size: 25px;
+    color: #ffd700;
+    text-shadow: 0 0 5px rgb(201, 215, 4);
+    z-index: 11;
+    transition: transform 0.3s ease, color 0.3s ease;
+  }
+  .heart-link:hover span {
+    transform: translate(-50%, -50%) rotate(45deg) scale(1.2);
+    color: #facc15;
+  }
+  .heart-link.sparkle::after {
+    content: '';
+    position: absolute;
+    width: 120%;
+    height: 120%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.9) 10%, transparent 70%);
+    opacity: 0;
+    border-radius: 50%;
+    transform: scale(0);
+    z-index: 9;
+  }
+  .heart-link:hover.sparkle::after {
+    animation: sparkle 0.6s ease-out;
+  }
+  @keyframes pulse {
+    0% { transform: rotate(-45deg) scale(1); box-shadow: 0 0 15px rgba(244, 114, 182, 0.9), 0 0 25px rgba(255, 255, 255, 0.4); }
+    50% { transform: rotate(-45deg) scale(1.05); box-shadow: 0 0 20px rgba(244, 114, 182, 1), 0 0 30px rgba(255, 255, 255, 0.6); }
+    100% { transform: rotate(-45deg) scale(1); box-shadow: 0 0 15px rgba(244, 114, 182, 0.9), 0 0 25px rgba(255, 255, 255, 0.4); }
+  }
+  @keyframes small-pulse {
+    0% { transform: rotate(-45deg) scale(1); }
+    50% { transform: rotate(-45deg) scale(1.05); }
+    100% { transform: rotate(-45deg) scale(1); }
+  }
+  @keyframes float {
+    0% { transform: rotate(-45deg) translateY(0); }
+    50% { transform: rotate(-45deg) translateY(-10px); }
+    100% { transform: rotate(-45deg) translateY(0); }
+  }
+  @keyframes sparkle {
+    0% { transform: scale(0); opacity: 0.9; }
+    100% { transform: scale(1.8); opacity: 0; }
+  }
+
+    @keyframes star-shower {
+      0% {
+        transform: translateY(-10vh) scale(1);
+        opacity: 1;
+      }
+      50% {
+        transform: translateY(50vh) scale(1.2);
+        opacity: 0.8;
+      }
+      100% {
+        transform: translateY(110vh) scale(0.8);
+        opacity: 0;
+      }
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+      100% { transform: translateY(0); }
+    }
+
+    @keyframes music-bar {
+      0% { height: 5px; }
+      50% { height: 20px; }
+      100% { height: 5px; }
+    }
+
+    @keyframes unroll {
+      0% {
+        transform: rotate(-45deg) scale(1);
+        clip-path: path('M125,37.5 C187.5,0 250,37.5 250,100 C250,162.5 187.5,225 125,250 C62.5,225 0,162.5 0,100 C0,37.5 62.5,0 125,37.5 Z');
+      }
+      50% {
+        transform: rotate(-45deg) scale(1.1);
+        clip-path: path('M125,37.5 C187.5,0 250,37.5 250,100 C250,162.5 187.5,225 125,250 C62.5,225 0,162.5 0,100 C0,37.5 62.5,0 125,37.5 Z');
+      }
+      100% {
+        transform: none;
+        clip-path: none;
+        border-radius: 10px;
+      }
+    }
+
+    @keyframes wind-wave {
+      0% {
+        transform: translateX(0) rotate(0deg);
+      }
+      50% {
+        transform: translateX(5px) rotate(5deg);
+      }
+      100% {
+        transform: translateX(0) rotate(0deg);
+      }
+    }
+
+    @keyframes bloom {
+      0% {
+        transform: scale(0.9);
+      }
+      50% {
+        transform: scale(1.1);
+      }
+      100% {
+        transform: scale(0.9);
+      }
+    }
+
+    @keyframes group-move {
+      0% {
+        transform: translateX(0);
+      }
+      50% {
+        transform: translateX(20px);
+      }
+      100% {
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: translate(-50%, -50%) scale(0.5);
+      }
+      50% {
+        transform: translate(-50%, -50%) scale(0.55);
+      }
+      100% {
+        transform: translate(-50%, -50%) scale(0.5);
+      }
+    }
+
+    @media (max-width: 640px) {
+      body {
+        padding: 1rem;
+        padding-bottom: 150px;
+      }
+
+      .header h1 {
+        font-size: 2rem;
+      }
+
+      .header p {
+        font-size: 1.2rem;
+      }
+
+      .letter-container {
+        width: 200px;
+        height: 200px;
+        top: var(--letter-top);
+        left: var(--letter-left);
+      }
+
+      .letter-container.open {
+        max-width: 90vw;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        transform: translateY(100px);
+      }
+
+      .letter.open {
+        width: 80vw;
+        max-width: 320px;
+        min-width: 280px;
+        height: 480px;
+        transform: none;
+      }
+
+      .letter-content {
+        font-size: 1rem;
+        max-width: 280px;
+      }
+
+      .letter-image {
+        width: 80vw;
+        max-width: 320px;
+        min-width: 280px;
+        height: 480px;
+      }
+
+      .letter-container.open .letter-image {
+        transform: none;
+        margin-top: 0;
+      }
+
+      .music-square {
+        width: 100px;
+        height: 100px;
+        bottom: 130px;
+      }
+
+      .golden-heart-wrapper {
+        width: 80px;
+        height: 80px;
+        top: calc(45% + var(--golden-heart-top-offset));
+        left: calc(50% + var(--golden-heart-left-offset));
+      }
+
+      .golden-heart {
+        width: 60px;
+        height: 60px;
+        clip-path: path('M30,9 C45,0 60,9 60,24 C60,39 45,54 30,60 C15,54 0,39 0,24 C0,9 15,0 30,9 Z');
+      }
+    }
+  </style>
+</head>
+<body>
+  <audio id="bg-music" loop muted>
+    <source src="Songs/Perfect.mp3" type="audio/mp3">
+    Your browser does not support the audio element.
+  </audio>
+
+  <div class="stars">
+    <div class="star red"><div class="spoke"></div><div class="spoke"></div><div class="spoke"></div></div>
+    <div class="star yellow"><div class="spoke"></div><div class="spoke"></div><div class="spoke"></div></div>
+    <div class="star white"><div class="spoke"></div><div class="spoke"></div><div class="spoke"></div></div>
+    <div class="star red"><div class="spoke"></div><div class="spoke"></div><div class="spoke"></div></div>
+    <div class="star yellow"><div class="spoke"></div><div class="spoke"></div><div class="spoke"></div></div>
+    <div class="star white"><div class="spoke"></div><div class="spoke"></div><div class="spoke"></div></div>
+    <div class="star red"><div class="spoke"></div><div class="spoke"></div><div class="spoke"></div></div>
+    <div class="star yellow"><div class="spoke"></div><div class="spoke"></div><div class="spoke"></div></div>
+    <div class="star white"><div class="spoke"></div><div class="spoke"></div><div class="spoke"></div></div>
+    <div class="star red"><div class="spoke"></div><div class="spoke"></div><div class="spoke"></div></div>
+  </div>
+
+  <div class="music-square">
+    <img src="Valerie 7/4.jpg" alt="Her Photo">
+    <div class="music-bars">
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <div class="header">
+      <h1 class="text-5xl md:text-7xl font-['Emilys_Candy'] text-pink-600">L - Letter of Love for Princess</h1>
+      <p class="text-2xl mt-2 text-white">Click the golden heart to unfold a heartfelt message for Princess Valerie.</p>
+    </div>
+
+    <div class="letter-container">
+      <div class="letter">
+        <div class="letter-content">
+          Dear Princess Valerie,<br>
+          Happy Birthday, my love. On this special day, the world was gifted with a beautiful person with kindest soul, and I was gifted this kindest soul as my soulmate. I thank God and your Mom with all my heart for bringing you into this world and into my life.
+          You are the love lighten up the chamber of my dark lovelife, sometimes you are calm but chaos as well, but you are always be the reason behind my every smile. Your love has transformed my life in ways I never imagined. You’ve shown me what it means to truly love and be loved unconditionally, fearlessly, and deeply. I’ve discovered the true meaning of connection, of loyalty, of dreams shared and promises kept with you. Every moment with you feels like a magical girl, who controls my emotions. Valerie you changed my barren land into the garden of beautiful flowers. Now it's my reponsibility to give you the life you dreamed of.
+          Valerie, I promise to stand by you through every joy and every storm. You are my forever, my only, my always. Thank you for loving me and letting me love you. I can't wait to spend a lifetime making every birthday as special as you are.<br>
+          Feelings from Heart of Prateek Narain<br>
+          forever yours.<br>
+          <button class="close-button">Close</button>
+        </div>
+        <div class="golden-heart-wrapper">
+          <div class="golden-heart"></div>
+        </div>
+      </div>
+      <div class="letter-image">
+        <img src="Valerie 7/4.jpg" alt="Princess Valerie">
+      </div>
+    </div>
+  </div>
+
+  <div class="rose-border">
+    <div class="rose-row">
+      <div></div><div></div><div></div><div></div><div></div>
+      <div></div><div></div><div></div><div></div><div></div>
+      <div></div><div></div><div></div><div></div>
+    </div>
+  </div>
+
+  <a href="e1.html" class="heart-link" onclick="triggerConfetti()">
+    <span>E</span>
+  </a>
+
+  <script>
+    console.log("Script loaded successfully");
+
+    const audio = document.getElementById('bg-music');
+    const letter = document.querySelector('.letter');
+    const letterContainer = document.querySelector('.letter-container');
+    const goldenHeartWrapper = document.querySelector('.golden-heart-wrapper');
+    const closeButton = document.querySelector('.close-button');
+    const roseBorder = document.querySelector('.rose-border');
+    const header = document.querySelector('.header');
+
+    document.addEventListener('DOMContentLoaded', () => {
+      console.log('Page loaded, attempting to load audio');
+      audio.load();
+    });
+
+    goldenHeartWrapper.addEventListener('click', () => {
+      console.log('Golden heart clicked');
+      letter.classList.add('open');
+      letterContainer.classList.add('open');
+      roseBorder.classList.add('hidden');
+      header.classList.add('hidden');
+      audio.muted = false;
+      audio.volume = 0.1; // Set default volume to 10%
+      audio.play().then(() => {
+        console.log('Audio playing successfully');
+      }).catch(error => {
+        console.error('Audio playback failed:', error.message);
+      });
+      setTimeout(() => {
+        letterContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 1200);
+    });
+
+    if (!closeButton) {
+      console.error('Close button not found in the DOM');
+    } else {
+      closeButton.addEventListener('click', () => {
+        console.log('Close button clicked');
+        letter.classList.remove('open');
+        letterContainer.classList.remove('open');
+        roseBorder.classList.remove('hidden');
+        header.classList.remove('hidden');
+        audio.pause();
+        audio.currentTime = 0;
+        audio.muted = true;
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }
+  </script>
+</body>
+</html>

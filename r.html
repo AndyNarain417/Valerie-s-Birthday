@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Heart Reel - A Special Moment</title>
+  <link rel="icon" type="image/png" href="birthday tune\VP.png">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Dancing+Script&family=Londrina+Shadow&family=Emilys+Candy&family=Sail&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      background: linear-gradient(to bottom, #ff9a9e, #fad0c4, #d8b4fe);
+      min-height: 100vh;
+      font-family: 'Sail', cursive;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+      margin: 0;
+      position: relative;
+    }
+
+    .initial-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 10;
+      transition: opacity 0.5s ease;
+    }
+
+    .initial-container.hidden {
+      opacity: 0;
+      display: none;
+    }
+
+    .header {
+      text-align: center;
+      padding: 2rem 0;
+      z-index: 10;
+    }
+
+    .header h1 {
+      font-family: 'Emilys Candy', cursive;
+      color: #ec4899;
+      font-size: 5rem;
+    }
+
+    .header p {
+      font-family: 'Sail', cursive;
+      color: #ffffff;
+      font-size: 1.5rem;
+      margin-top: 1rem;
+    }
+
+    .balloons {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 5;
+      pointer-events: none;
+    }
+
+    .balloon {
+      position: absolute;
+      width: 70px;
+      height: 135px;
+      animation: float 4s ease-in-out infinite;
+    }
+
+    .balloon-top {
+      width: 70px;
+      height: 70px;
+      border-radius: 50% 50% 40% 40%;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    .balloon.red .balloon-top { background: #FF6666; }
+    .balloon.orange .balloon-top { background: #FFCC99; }
+    .balloon.yellow .balloon-top { background: #FFFF99; }
+    .balloon.green .balloon-top { background: #99FF99; }
+    .balloon.blue .balloon-top { background: #99CCFF; }
+    .balloon.indigo .balloon-top { background: #9999FF; }
+    .balloon.violet .balloon-top { background: #FF99FF; }
+
+    .basket {
+      width: 30px;
+      height: 20px;
+      background: #8B4513;
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 2px;
+    }
+
+    .basket::before,
+    .basket::after {
+      content: '';
+      position: absolute;
+      top: -5px;
+      width: 0;
+      height: 0;
+      border-left: 3px solid transparent;
+      border-right: 3px solid transparent;
+      border-bottom: 5px solid #8B4513;
+    }
+
+    .basket::before { left: 0; }
+    .basket::after { right: 0; }
+
+    .letter {
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      top: 3px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #FFFF99;
+      font-family: sans-serif;
+      font-size: 12px;
+      font-weight: bold;
+      text-align: center;
+      line-height: 14px;
+      animation: lightning-glow 1s ease-in-out infinite;
+    }
+
+    .balloon::before,
+    .balloon::after {
+      content: '';
+      position: absolute;
+      width: 2px;
+      height: 40px;
+      background: #555;
+    }
+
+    .balloon::before {
+      top: 70px;
+      left: 12px;
+      transform: rotate(-20deg);
+    }
+
+    .balloon::after {
+      top: 70px;
+      right: 12px;
+      transform: rotate(20deg);
+    }
+
+    .balloon-top::before,
+    .balloon-top::after {
+      content: '';
+      position: absolute;
+      bottom: -3px;
+      width: 6px;
+      height: 6px;
+      background: #555;
+      border-radius: 50%;
+    }
+
+    .balloon-top::before { left: 12px; }
+    .balloon-top::after { right: 12px; }
+
+    .heart-reel-container {
+      position: relative;
+    }
+
+    .heart-reel {
+      width: 200px;
+      height: 200px;
+      background: linear-gradient(135deg, #ff0000, #ff69b4);
+      clip-path: polygon(
+        50% 0%, 80% 0%, 100% 20%, 100% 40%, 80% 60%, 
+        50% 100%, 20% 60%, 0% 40%, 0% 20%, 20% 0%
+      );
+      position: relative;
+      cursor: pointer;
+      animation: reel-rotate 10s linear infinite;
+      margin: 2rem 0;
+    }
+
+    .heart-reel .eye-left,
+    .heart-reel .eye-right {
+      position: absolute;
+      top: 15%;
+      width: 28px;
+      height: 32px;
+      background: #ffffff;
+      border-radius: 50% 50% 45% 45%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 0 5px #ffccff;
+      animation: blink 3s ease-in-out infinite;
+    }
+
+    .heart-reel .eye-left {
+      left: 25%;
+      animation-delay: 0s;
+    }
+
+    .heart-reel .eye-right {
+      right: 25%;
+      animation-delay: 0.2s;
+    }
+
+    .heart-reel .pupil {
+      width: 14px;
+      height: 14px;
+      background: #000000;
+      border-radius: 50%;
+      position: relative;
+    }
+
+    .heart-reel .highlight {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 6px;
+      height: 6px;
+      background: #ffffff;
+      border-radius: 50%;
+      box-shadow: 0 0 3px #ffffff;
+    }
+
+    .heart-reel .eyelash {
+      position: absolute;
+      top: -2px;
+      width: 8px;
+      height: 8px;
+      border: 2px solid #000000;
+      border-left: none;
+      border-top: none;
+      border-bottom: none;
+      transform: rotate(45deg);
+    }
+
+    .heart-reel .eye-left .eyelash:nth-child(1) { right: 2px; }
+    .heart-reel .eye-left .eyelash:nth-child(2) {
+      right: 8px;
+      transform: rotate(30deg);
+    }
+
+    .heart-reel .eye-right .eyelash:nth-child(1) {
+      left: 2px;
+      transform: rotate(-45deg);
+    }
+
+    .heart-reel .eye-right .eyelash:nth-child(2) {
+      left: 8px;
+      transform: rotate(-30deg);
+    }
+
+    .center-heart {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 60px;
+      height: 60px;
+      background: #ff69b4;
+      clip-path: polygon(
+        50% 0%, 80% 0%, 100% 20%, 100% 40%, 80% 60%, 
+        50% 100%, 20% 60%, 0% 40%, 0% 20%, 20% 0%
+      );
+    }
+
+    .hearts {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 5;
+      pointer-events: none;
+    }
+
+    .heart {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: #ff0000;
+      clip-path: polygon(
+        50% 0%, 80% 0%, 100% 20%, 100% 40%, 80% 60%, 
+        50% 100%, 20% 60%, 0% 40%, 0% 20%, 20% 0%
+      );
+      animation: heart-fall 4s linear infinite;
+      opacity: 0.8;
+    }
+
+    .heart:nth-child(2n) { background: #ff69b4; }
+    .heart:nth-child(3n) { background: #ffffff; }
+
+    .theater-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 15;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    .theater-overlay.active {
+      display: flex;
+    }
+
+    .video-display {
+      width: 640px;
+      height: 360px;
+      background: #000;
+      border: 5px solid #fff;
+      border-radius: 15px;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0);
+      transition: box-shadow 0.3s ease;
+      z-index: 16; /* Ensure video-display is above name-circle */
+    }
+
+    .video-display.glow-red { box-shadow: 0 0 20px #ff6666, 0 0 40px #ff6666; }
+    .video-display.glow-orange { box-shadow: 0 0 20px #ffcc99, 0 0 40px #ffcc99; }
+    .video-display.glow-yellow { box-shadow: 0 0 20px #ffff99, 0 0 40px #ffff99; }
+    .video-display.glow-green { box-shadow: 0 0 20px #99ff99, 0 0 40px #99ff99; }
+    .video-display.glow-blue { box-shadow: 0 0 20px #99ccff, 0 0 40px #99ccff; }
+    .video-display.glow-indigo { box-shadow: 0 0 20px #9999ff, 0 0 40px #9999ff; }
+    .video-display.glow-violet { box-shadow: 0 0 20px #ff99ff, 0 0 40px #ff99ff; }
+
+    .video-display video {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      z-index: 17; /* Ensure video is above name-circle */
+    }
+
+    .heart-button-container {
+      display: flex;
+      justify-content: space-between;
+      width: 720px;
+      height: 360px;
+      position: relative;
+    }
+
+    .heart-button {
+      width: 30px;
+      height: 30px;
+      background: #ffffff;
+      clip-path: polygon(
+        50% 0%, 80% 0%, 100% 20%, 100% 40%, 80% 60%, 
+        50% 100%, 20% 60%, 0% 40%, 0% 20%, 20% 0%
+      );
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.3s ease;
+    }
+
+    .heart-button:hover {
+      transform: scale(1.2);
+    }
+
+    .heart-button.red { background: #ff6666; }
+    .heart-button.orange { background: #ffcc99; }
+    .heart-button.yellow { background: #ffff99; }
+    .heart-button.green { background: #99ff99; }
+    .heart-button.blue { background: #99ccff; }
+    .heart-button.indigo { background: #9999ff; }
+    .heart-button.violet { background: #ff99ff; }
+    .heart-button.off { background: #808080; }
+
+    .left-buttons,
+    .right-buttons {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100%;
+      padding: 10px 0;
+    }
+
+    .left-buttons { margin-left: -50px; }
+    .right-buttons { margin-right: -50px; }
+
+    .name-circle {
+      position: absolute;
+      width: 700px;
+      height: 420px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 15; /* Below video-display to avoid blocking controls */
+      pointer-events: none; /* Prevent name-circle from blocking interactions */
+    }
+
+    .name-circle span {
+      position: absolute;
+      font-family: 'Emilys Candy', cursive;
+      font-size: 2rem;
+      color: #ff69b4;
+      text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+      animation: sparkle 2s ease-in-out infinite;
+    }
+
+    .name-circle span:nth-child(1) { transform: rotate(0deg) translate(360px) rotate(0deg); }
+    .name-circle span:nth-child(2) { transform: rotate(51.4deg) translate(360px) rotate(-51.4deg); }
+    .name-circle span:nth-child(3) { transform: rotate(102.8deg) translate(360px) rotate(-102.4deg); }
+    .name-circle span:nth-child(4) { transform: rotate(154.2deg) translate(360px) rotate(-154.2deg); }
+    .name-circle span:nth-child(5) { transform: rotate(205.6deg) translate(360px) rotate(-205.6deg); }
+    .name-circle span:nth-child(6) { transform: rotate(257deg) translate(360px) rotate(-257deg); }
+    .name-circle span:nth-child(7) { transform: rotate(308.4deg) translate(360px) rotate(-308.4deg); }
+
+    .exit-button {
+      margin-top: 1rem;
+      padding: 0.5rem 2rem;
+      background: #ec4899;
+      color: #ffffff;
+      font-family: 'Sail', cursive;
+      font-size: 1.25rem;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .exit-button:hover {
+      background: #db2777;
+    }
+
+    .music-square {
+      position: fixed;
+      bottom: 90px;
+      right: 20px;
+      width: 150px;
+      height: 150px;
+      background: #ffffff;
+      border: 2px solid #f472b6;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(244, 114, 182, 0.7);
+      z-index: 12;
+      animation: float 4s ease-in-out infinite;
+      overflow: hidden;
+    }
+
+    .music-square img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .music-bars {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 30px;
+      display: flex;
+      justify-content: space-around;
+      align-items: flex-end;
+      padding: 5px;
+    }
+
+    .bar {
+      width: 8px;
+      height: 5px;
+      background: #126be8;
+      border-radius: 1px;
+      animation: music-bar 0.8s ease-in-out infinite;
+    }
+
+    .bar:nth-child(1) { animation-delay: 0s; }
+    .bar:nth-child(2) { animation-delay: 0.2s; }
+    .bar:nth-child(3) { animation-delay: 0.4s; }
+    .bar:nth-child(4) { animation-delay: 0.6s; }
+    .bar:nth-child(5) { animation-delay: 0.8s; }
+
+    .heart-link {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 40px;
+      height: 40px;
+      background-color: #f472b6;
+      z-index: 10;
+      cursor: pointer;
+      box-shadow: 0 0 15px rgba(244, 114, 182, 0.9), 0 0 25px rgba(255, 255, 255, 0.4);
+      animation: pulse 2s ease-in-out infinite, float 4s ease-in-out infinite;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+      transform: rotate(-45deg);
+      border-radius: 0;
+    }
+
+    .heart-link::before,
+    .heart-link::after {
+      content: '';
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      background-color: #f472b6;
+      border-radius: 20px;
+      z-index: 9;
+      transition: background-color 0.3s ease;
+    }
+
+    .heart-link::before {
+      top: -20px;
+      left: 0;
+    }
+
+    .heart-link::after {
+      left: 20px;
+      top: 0;
+    }
+
+    .heart-link:hover {
+      animation: small-pulse 0.7s infinite;
+      background-color: #ff0000;
+    }
+
+    .heart-link:hover::before,
+    .heart-link:hover::after {
+      background-color: #ff0000;
+    }
+
+    .heart-link span {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(45deg);
+      font-family: 'Emilys Candy', cursive;
+      font-size: 25px;
+      color: #ffd700;
+      text-shadow: 0 0 5px rgb(201, 215, 4);
+      z-index: 11;
+      transition: transform 0.3s ease, color 0.3s ease;
+    }
+
+    .heart-link:hover span {
+      transform: translate(-50%, -50%) rotate(45deg) scale(1.2);
+      color: #facc15;
+    }
+
+    .heart-link.sparkle::after {
+      content: '';
+      position: absolute;
+      width: 120%;
+      height: 120%;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.9) 10%, transparent 70%);
+      opacity: 0;
+      border-radius: 50%;
+      transform: scale(0);
+      z-index: 9;
+    }
+
+    .heart-link:hover.sparkle::after {
+      animation: sparkle 0.6s ease-out;
+    }
+
+    @keyframes pulse {
+      0% { transform: rotate(-45deg) scale(1); box-shadow: 0 0 15px rgba(244, 114, 182, 0.9), 0 0 25px rgba(255, 255, 255, 0.4); }
+      50% { transform: rotate(-45deg) scale(1.05); box-shadow: 0 0 20px rgba(244, 114, 182, 1), 0 0 30px rgba(255, 255, 255, 0.6); }
+      100% { transform: rotate(-45deg) scale(1); box-shadow: 0 0 15px rgba(244, 114, 182, 0.9), 0 0 25px rgba(255, 255, 255, 0.4); }
+    }
+
+    @keyframes small-pulse {
+      0% { transform: rotate(-45deg) scale(1); }
+      50% { transform: rotate(-45deg) scale(1.05); }
+      100% { transform: rotate(-45deg) scale(1); }
+    }
+
+    @keyframes float {
+      0% { transform: rotate(-45deg) translateY(0); }
+      50% { transform: rotate(-45deg) translateY(-10px); }
+      100% { transform: rotate(-45deg) translateY(0); }
+    }
+
+    @keyframes sparkle {
+      0% { transform: scale(0); opacity: 0.9; }
+      100% { transform: scale(1.8); opacity: 0; }
+    }
+
+    @keyframes reel-rotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @keyframes heart-fall {
+      0% {
+        transform: translateY(-10vh) rotate(0deg);
+        opacity: 0.8;
+      }
+      50% {
+        transform: translateY(50vh) rotate(180deg);
+        opacity: 0.5;
+      }
+      100% {
+        transform: translateY(110vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0); }
+    }
+
+    @keyframes sparkle {
+      0% { text-shadow: 0 0 5px rgba(255, 255, 255, 0.8); }
+      50% { text-shadow: 0 0 10px rgba(255, 255, 255, 1); }
+      100% { text-shadow: 0 0 5px rgba(255, 255, 255, 0.8); }
+    }
+
+    @keyframes blink {
+      0%, 90% { transform: scaleY(1); }
+      95% { transform: scaleY(0.2); }
+      100% { transform: scaleY(1); }
+    }
+
+    @keyframes lightning-glow {
+      0% { text-shadow: 0 0 5px rgba(255, 255, 153, 0.8); }
+      50% { text-shadow: 0 0 10px rgba(255, 255, 153, 1); }
+      100% { text-shadow: 0 0 5px rgba(255, 255, 153, 0.8); }
+    }
+
+    @keyframes music-bar {
+      0% { height: 3px; }
+      50% { height: 15px; }
+      100% { height: 3px; }
+    }
+  </style>
+</head>
+<body>
+  <audio id="backgroundMusic" loop muted>
+    <source src="Songs/Die With A Smile.mp3" type="audio/mp3">
+    Your browser does not support the audio element.
+  </audio>
+
+  <div class="music-square">
+    <img src="Valerie 7/4.jpg" alt="Music Image">
+    <div class="music-bars">
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+    </div>
+  </div>
+
+  <div class="initial-container" id="initialContainer">
+    <div class="header">
+      <h1 class="text-5xl md:text-7xl">R – Real love, just for Princess</h1>
+      <p class="text-2xl mt-2">Click the heart to watch a magical moment!</p>
+    </div>
+
+    <div class="heart-reel-container">
+      <div class="heart-reel" id="heartReel">
+        <div class="eye-left">
+          <div class="pupil">
+            <div class="highlight"></div>
+          </div>
+          <div class="eyelash"></div>
+          <div class="eyelash"></div>
+        </div>
+        <div class="eye-right">
+          <div class="pupil">
+            <div class="highlight"></div>
+          </div>
+          <div class="eyelash"></div>
+          <div class="eyelash"></div>
+        </div>
+        <div class="center-heart"></div>
+      </div>
+    </div>
+
+    <div class="balloons" id="balloonsContainer">
+      <div class="balloon red" style="left: 10%; top: 10%;">
+        <div class="balloon-top"></div>
+        <div class="basket">
+          <div class="letter">V</div>
+        </div>
+      </div>
+      <div class="balloon orange" style="left: 20%; top: 35%; animation-delay: 0.5s;">
+        <div class="balloon-top"></div>
+        <div class="basket">
+          <div class="letter">A</div>
+        </div>
+      </div>
+      <div class="balloon yellow" style="left: 30%; top: 60%; animation-delay: 1s;">
+        <div class="balloon-top"></div>
+        <div class="basket">
+          <div class="letter">L</div>
+        </div>
+      </div>
+      <div class="balloon green" style="left: 85%; top: 10%; animation-delay: 1.5s;">
+        <div class="balloon-top"></div>
+        <div class="basket">
+          <div class="letter">E</div>
+        </div>
+      </div>
+      <div class="balloon blue" style="left: 70%; top: 60%; animation-delay: 2s;">
+        <div class="balloon-top"></div>
+        <div class="basket">
+          <div class="letter">R</div>
+        </div>
+      </div>
+      <div class="balloon indigo" style="left: 80%; top: 35%; animation-delay: 2.5s;">
+        <div class="balloon-top"></div>
+        <div class="basket">
+          <div class="letter">I</div>
+        </div>
+      </div>
+      <div class="balloon violet" style="left: 50%; top: 80%; animation-delay: 3s;">
+        <div class="balloon-top"></div>
+        <div class="basket">
+          <div class="letter">E</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hearts" id="heartsContainer">
+      <div class="heart"></div>
+      <div class="heart"></div>
+      <div class="heart"></div>
+      <div class="heart"></div>
+      <div class="heart"></div>
+      <div class="heart"></div>
+      <div class="heart"></div>
+      <div class="heart"></div>
+      <div class="heart"></div>
+      <div class="heart"></div>
+      <div class="heart"></div>
+      <div class="heart"></div>
+      <div class="heart"></div>
+      <div class="heart"></div>
+    </div>
+  </div>
+
+  <div class="theater-overlay" id="theaterOverlay">
+    <div class="heart-button-container">
+      <div class="left-buttons">
+        <div class="heart-button red" data-color="red"></div>
+        <div class="heart-button orange" data-color="orange"></div>
+        <div class="heart-button yellow" data-color="yellow"></div>
+        <div class="heart-button green" data-color="green"></div>
+      </div>
+      <div class="video-display" id="videoDisplay">
+        <video id="reelVideo" controls playsinline>
+          <source src="birthday tune/Video.mp4" type="video/mp4">
+          Your browser does not support the video element.
+        </video>
+        <div class="name-circle">
+          <span>V</span>
+          <span>a</span>
+          <span>l</span>
+          <span>e</span>
+          <span>r</span>
+          <span>i</span>
+          <span>e</span>
+        </div>
+      </div>
+      <div class="right-buttons">
+        <div class="heart-button blue" data-color="blue"></div>
+        <div class="heart-button indigo" data-color="indigo"></div>
+        <div class="heart-button violet" data-color="violet"></div>
+        <div class="heart-button off" data-color="off"></div>
+      </div>
+    </div>
+    <button class="exit-button" id="exitButton">Exit</button>
+  </div>
+
+  <a href="i.html" class="heart-link" onclick="triggerConfetti()">
+    <span>I</span>
+  </a>
+
+  <script>
+    const heartReel = document.getElementById('heartReel');
+    const initialContainer = document.getElementById('initialContainer');
+    const theaterOverlay = document.getElementById('theaterOverlay');
+    const reelVideo = document.getElementById('reelVideo');
+    const exitButton = document.getElementById('exitButton');
+    const videoDisplay = document.getElementById('videoDisplay');
+    const hearts = document.querySelectorAll('.heart');
+    const heartButtons = document.querySelectorAll('.heart-button');
+    const backgroundMusic = document.getElementById('backgroundMusic');
+
+    let isMusicUnmuted = false;
+
+    // Randomize Heart Shower
+    hearts.forEach(heart => {
+      const randomLeft = Math.random() * 100;
+      const randomDelay = Math.random() * 4;
+      heart.style.left = `${randomLeft}%`;
+      heart.style.animationDelay = `${randomDelay}s`;
+    });
+
+    // Unmute and play background music on click, but only if not clicking the heart reel
+    document.addEventListener('click', (event) => {
+      if (!isMusicUnmuted && !heartReel.contains(event.target)) {
+        backgroundMusic.muted = false;
+        backgroundMusic.volume = 0.2;
+        isMusicUnmuted = true;
+        backgroundMusic.play().catch(error => {
+          console.error('Background music playback failed:', error.message);
+        });
+      }
+    });
+
+    // Debug video loading issues
+    reelVideo.addEventListener('error', (e) => {
+      console.error('Video loading error:', e);
+      console.error('Error code:', reelVideo.error.code);
+      console.error('Error message:', reelVideo.error.message);
+    });
+
+    reelVideo.addEventListener('loadeddata', () => {
+      console.log('Video loaded successfully');
+    });
+
+    // Show theater overlay when heart reel is clicked
+    heartReel.addEventListener('click', () => {
+      if (!isMusicUnmuted) {
+        backgroundMusic.muted = false;
+        backgroundMusic.volume = 0.2;
+        isMusicUnmuted = true;
+      }
+      backgroundMusic.pause();
+      initialContainer.classList.add('hidden');
+      theaterOverlay.classList.add('active');
+    });
+
+    // Exit theater overlay
+    exitButton.addEventListener('click', () => {
+      if (isMusicUnmuted) {
+        backgroundMusic.play().catch(error => {
+          console.error('Background music playback failed:', error.message);
+        });
+      }
+      theaterOverlay.classList.remove('active');
+      initialContainer.classList.remove('hidden');
+      videoDisplay.className = 'video-display';
+    });
+
+    // Handle heart button clicks for ambient lighting
+    heartButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const color = button.getAttribute('data-color');
+        videoDisplay.className = 'video-display';
+        if (color !== 'off') {
+          videoDisplay.classList.add(`glow-${color}`);
+        }
+      });
+    });
+  </script>
+</body>
+</html>

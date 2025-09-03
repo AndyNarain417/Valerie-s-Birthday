@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday, Princess - Emotions</title>
+  <link rel="icon" type="image/png" href="birthday tune\VP.png">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Dancing+Script&family=Londrina+Shadow&family=Emilys+Candy&family=Sail&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      background: linear-gradient(to bottom, #ff9a9e, #fad0c4, #d8b4fe);
+      min-height: 100vh;
+      font-family: 'Sail', cursive;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+    }
+
+    .header {
+      text-align: center;
+      padding: 2rem 0;
+      z-index: 10;
+    }
+
+    .header h1 {
+      font-family: 'Emilys Candy', cursive;
+    }
+
+    .header p {
+      font-family: 'Sail', cursive;
+    }
+
+    /* Music Square Styles */
+    .music-square {
+      position: fixed;
+      bottom: 90px;
+      right: 20px;
+      left: auto;
+      width: 150px;
+      height: 150px;
+      background: #ffffff;
+      border: 2px solid #f472b6;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(244, 114, 182, 0.7);
+      z-index: 12;
+      animation: float 4s ease-in-out infinite;
+      overflow: hidden;
+    }
+
+    .music-square img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .music-bars {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 30px;
+      display: flex;
+      justify-content: space-around;
+      align-items: flex-end;
+      padding: 5px;
+    }
+
+    .bar {
+      width: 8px;
+      height: 5px;
+      background: #126be8;
+      animation: music-bar 0.8s ease-in-out infinite;
+    }
+
+    .bar:nth-child(2) { animation-delay: 0.2s; }
+    .bar:nth-child(3) { animation-delay: 0.4s; }
+    .bar:nth-child(4) { animation-delay: 0.6s; }
+    .bar:nth-child(5) { animation-delay: 0.8s; }
+
+    /* Hearts Shower Styles */
+    .hearts-shower {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .heart-shower {
+      position: absolute;
+      background: transparent;
+      transform: rotate(-45deg);
+      animation: heart-shower 5s linear infinite;
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+      cursor: pointer;
+      pointer-events: auto;
+    }
+
+    .heart-shower::before,
+    .heart-shower::after {
+      content: '';
+      position: absolute;
+      background: inherit;
+      border-radius: 50%;
+    }
+
+    .heart-shower:nth-child(1) { left: 5%; animation-delay: 0.1s; width: 15px; height: 15px; background: #ff9999; }
+    .heart-shower:nth-child(1)::before { top: -7.5px; left: 0; width: 15px; height: 15px; }
+    .heart-shower:nth-child(1)::after { left: 7.5px; top: 0; width: 15px; height: 15px; }
+    .heart-shower:nth-child(2) { left: 15%; animation-delay: 2.8s; width: 20px; height: 20px; background: #ffcc99; }
+    .heart-shower:nth-child(2)::before { top: -10px; left: 0; width: 20px; height: 20px; }
+    .heart-shower:nth-child(2)::after { left: 10px; top: 0; width: 20px; height: 20px; }
+    .heart-shower:nth-child(3) { left: 25%; animation-delay: 1.3s; width: 18px; height: 18px; background: #ffff99; }
+    .heart-shower:nth-child(3)::before { top: -9px; left: 0; width: 18px; height: 18px; }
+    .heart-shower:nth-child(3)::after { left: 9px; top: 0; width: 18px; height: 18px; }
+    .heart-shower:nth-child(4) { left: 35%; animation-delay: 4.2s; width: 22px; height: 22px; background: #99ff99; }
+    .heart-shower:nth-child(4)::before { top: -11px; left: 0; width: 22px; height: 22px; }
+    .heart-shower:nth-child(4)::after { left: 11px; top: 0; width: 22px; height: 22px; }
+    .heart-shower:nth-child(5) { left: 45%; animation-delay: 0.7s; width: 16px; height: 16px; background: #99ccff; }
+    .heart-shower:nth-child(5)::before { top: -8px; left: 0; width: 16px; height: 16px; }
+    .heart-shower:nth-child(5)::after { left: 8px; top: 0; width: 16px; height: 16px; }
+    .heart-shower:nth-child(6) { left: 55%; animation-delay: 3.5s; width: 20px; height: 20px; background: #cc99ff; }
+    .heart-shower:nth-child(6)::before { top: -10px; left: 0; width: 20px; height: 20px; }
+    .heart-shower:nth-child(6)::after { left: 10px; top: 0; width: 20px; height: 20px; }
+    .heart-shower:nth-child(7) { left: 65%; animation-delay: 1.9s; width: 17px; height: 17px; background: #ff99cc; }
+    .heart-shower:nth-child(7)::before { top: -8.5px; left: 0; width: 17px; height: 17px; }
+    .heart-shower:nth-child(7)::after { left: 8.5px; top: 0; width: 17px; height: 17px; }
+    .heart-shower:nth-child(8) { left: 75%; animation-delay: 4.8s; width: 19px; height: 19px; background: #ff9999; }
+    .heart-shower:nth-child(8)::before { top: -9.5px; left: 0; width: 19px; height: 19px; }
+    .heart-shower:nth-child(8)::after { left: 9.5px; top: 0; width: 19px; height: 19px; }
+    .heart-shower:nth-child(9) { left: 85%; animation-delay: 2.4s; width: 21px; height: 21px; background: #ffcc99; }
+    .heart-shower:nth-child(9)::before { top: -10.5px; left: 0; width: 21px; height: 21px; }
+    .heart-shower:nth-child(9)::after { left: 10.5px; top: 0; width: 21px; height: 21px; }
+    .heart-shower:nth-child(10) { left: 10%; animation-delay: 0.5s; width: 15px; height: 15px; background: #ffff99; }
+    .heart-shower:nth-child(10)::before { top: -7.5px; left: 0; width: 15px; height: 15px; }
+    .heart-shower:nth-child(10)::after { left: 7.5px; top: 0; width: 15px; height: 15px; }
+    .heart-shower:nth-child(11) { left: 20%; animation-delay: 3.1s; width: 18px; height: 18px; background: #99ff99; }
+    .heart-shower:nth-child(11)::before { top: -9px; left: 0; width: 18px; height: 18px; }
+    .heart-shower:nth-child(11)::after { left: 9px; top: 0; width: 18px; height: 18px; }
+    .heart-shower:nth-child(12) { left: 30%; animation-delay: 1.6s; width: 20px; height: 20px; background: #99ccff; }
+    .heart-shower:nth-child(12)::before { top: -10px; left: 0; width: 20px; height: 20px; }
+    .heart-shower:nth-child(12)::after { left: 10px; top: 0; width: 20px; height: 20px; }
+    .heart-shower:nth-child(13) { left: 40%; animation-delay: 4.0s; width: 16px; height: 16px; background: #cc99ff; }
+    .heart-shower:nth-child(13)::before { top: -8px; left: 0; width: 16px; height: 16px; }
+    .heart-shower:nth-child(13)::after { left: 8px; top: 0; width: 16px; height: 16px; }
+    .heart-shower:nth-child(14) { left: 50%; animation-delay: 2.0s; width: 22px; height: 22px; background: #ff99cc; }
+    .heart-shower:nth-child(14)::before { top: -11px; left: 0; width: 22px; height: 22px; }
+    .heart-shower:nth-child(14)::after { left: 11px; top: 0; width: 22px; height: 22px; }
+
+    /* Heart Link Styles */
+    .heart-link {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      background: #f472b6;
+      transform: rotate(-45deg);
+      animation: pulse 2s ease-in-out infinite;
+      z-index: 15;
+      text-decoration: none;
+      box-shadow: 0 0 10px rgba(244, 114, 182, 0.7);
+    }
+
+    .heart-link::before,
+    .heart-link::after {
+      content: '';
+      position: absolute;
+      background: #f472b6;
+      border-radius: 50%;
+    }
+
+    .heart-link::before {
+      top: -25px;
+      left: 0;
+      width: 50px;
+      height: 50px;
+    }
+
+    .heart-link::after {
+      left: 25px;
+      top: 0;
+      width: 50px;
+      height: 50px;
+    }
+
+    .heart-link span {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(45deg);
+      color: #ffffff;
+      font-family: 'Emilys Candy', cursive;
+      font-size: 25px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      z-index: 2;
+    }
+
+    .heart-link:hover {
+      background: #ff0000;
+    }
+
+    .heart-link:hover::before,
+    .heart-link:hover::after {
+      background: #ff0000;
+    }
+
+    .heart-link.sparkle::after {
+      animation: sparkle 1.5s ease-in-out infinite;
+    }
+
+    /* Card Container */
+    .card-container {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+      max-width: 1200px;
+      width: 100%;
+      justify-content: center;
+      margin-top: 2rem;
+      z-index: 10;
+    }
+
+    /* Flip Card Styles */
+    .card {
+      perspective: 1000px;
+      width: 250px;
+      height: 350px;
+      cursor: pointer;
+      position: relative;
+      z-index: 10;
+    }
+
+    .card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.6s;
+      transform-style: preserve-3d;
+      background: #f472b6;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(244, 114, 182, 0.7);
+    }
+
+    .card:hover .card-inner {
+      background: #ff0000;
+    }
+
+    .card.flipped .card-inner {
+      transform: rotateY(180deg);
+    }
+
+    .card-front,
+    .card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .card-front img,
+    .card-back img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+
+    .card-back {
+      background: #f472b6;
+      transform: rotateY(180deg);
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .card:hover .card-back {
+      background: #ff0000;
+    }
+
+    .emotion-label {
+      position: absolute;
+      bottom: -40px;
+      background: rgba(248, 24, 4, 0.9);
+      color: #ffffff;
+      font-family: 'Sail', cursive;
+      font-size: 1.2rem;
+      font-weight: bold;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      opacity: 0;
+      transition: opacity 0.3s ease, bottom 0.3s ease;
+      z-index: 2;
+      text-align: center;
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .card:hover .emotion-label {
+      opacity: 1;
+      bottom: 20px;
+    }
+
+    /* Full Screen Display */
+    .fullscreen-display {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 20;
+      flex-direction: column;
+    }
+
+    .fullscreen-display.active {
+      display: flex;
+    }
+
+    .fullscreen-card {
+      width: 400px;
+      height: 600px;
+      background: #f472b6;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(244, 114, 182, 0.7);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      padding: 2rem;
+      font-family: 'Sail', cursive;
+      font-size: 1.2rem;
+      color: #ffffff;
+      text-align: center;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    .fullscreen-card:hover {
+      background: #ff0000;
+      color: #facc15;
+    }
+
+    .fullscreen-card:hover .emotion-title {
+      color: #ffd700;
+    }
+
+    .emotion-title {
+      font-family: 'Emilys Candy', cursive;
+      font-size: 2rem;
+      color: #ffd700;
+      margin-bottom: 1rem;
+    }
+
+    .emotion-text {
+      flex-grow: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+    }
+
+    .exit-button {
+      padding: 0.5rem 1rem;
+      background: linear-gradient(135deg, #ffd700, #b8860b);
+      color: #ffffff;
+      font-family: 'Sail', cursive;
+      font-size: 1rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .exit-button:hover {
+      background: linear-gradient(135deg, #ffd700, #b8860b);
+    }
+
+    @keyframes heart-shower {
+      0% { transform: translateY(-20vh) rotate(-45deg) scale(1); opacity: 1; }
+      50% { transform: translateY(60vh) rotate(-45deg) scale(1.1); opacity: 0.8; }
+      100% { transform: translateY(120vh) rotate(-45deg) scale(0.9); opacity: 0; }
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+      100% { transform: translateY(0); }
+    }
+
+    @keyframes music-bar {
+      0% { height: 5px; }
+      50% { height: 20px; }
+      100% { height: 5px; }
+    }
+
+    @keyframes pulse {
+      0% { transform: rotate(-45deg) scale(1); }
+      50% { transform: rotate(-45deg) scale(1.1); }
+      100% { transform: rotate(-45deg) scale(1); }
+    }
+
+    @keyframes sparkle {
+      0% { opacity: 0; }
+      50% { opacity: 0.7; }
+      100% { opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <audio id="bg-music" loop muted>
+    <source src="Songs/Love Me Like You Do.mp3" type="audio/mp3">
+    Your browser does not support the audio element.
+  </audio>
+
+  <div class="hearts-shower">
+    <div class="heart-shower"></div>
+    <div class="heart-shower"></div>
+    <div class="heart-shower"></div>
+    <div class="heart-shower"></div>
+    <div class="heart-shower"></div>
+    <div class="heart-shower"></div>
+    <div class="heart-shower"></div>
+    <div class="heart-shower"></div>
+    <div class="heart-shower"></div>
+    <div class="heart-shower"></div>
+    <div class="heart-shower"></div>
+    <div class="heart-shower"></div>
+    <div class="heart-shower"></div>
+    <div class="heart-shower"></div>
+  </div>
+
+  <div class="music-square">
+    <img src="Valerie 7/4.jpg" alt="Her Photo">
+    <div class="music-bars">
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+    </div>
+  </div>
+
+  <a href="queen.html" class="heart-link">
+    <span>Queen</span>
+  </a>
+
+  <div class="header">
+    <h1 class="text-5xl md:text-7xl font-['Emilys_Candy'] text-pink-600">E - Gallery of Emotions</h1>
+    <p class="text-2xl mt-2 text-white">Click to reveal heartfelt emotions with memories for Princess Valerie.</p>
+  </div>
+
+  <div class="card-container">
+    <!-- Card 1: Care -->
+    <div class="card" data-text="Even in 9 silence days (31st April to 8th May), you cared. When I was low, you lifted me (my uncle's day). Even while hiding your pain, you said, “I'll always care for you” (when you had blood checkup and not sharing it with me). Valerie, true care comes from true love—and I promise to always protect, secure, and care for you. This is my Care Promise to you." data-emotion="Care">
+      <div class="card-inner">
+        <div class="card-front">
+          <img src="Valerie 7/Care.jpg" alt="Care Front Image">
+        </div>
+        <div class="card-back">
+          <img src="Valerie 7/Care.jpg" alt="Care Back Image">
+          <span class="emotion-label">Care</span>
+        </div>
+      </div>
+    </div>
+    <!-- Card 2: Anger -->
+    <div class="card" data-text="We had some moments of fights: some over intagram followings, some of misunderstandings, some over time when you get anger (9 silence days worst time till now) , you stayed. I failed once, but will never again. I promise to always make some time at least 5 mins from 24 hours to calm your heart, and stand by you in every storm. This is my Anger Control Promise to you." data-emotion="Anger">
+      <div class="card-inner">
+        <div class="card-front">
+          <img src="Valerie 7/Anger.jpg" alt="Anger Front Image">
+        </div>
+        <div class="card-back">
+          <img src="Valerie 7/Anger.jpg" alt="Anger Back Image">
+          <span class="emotion-label">Anger</span>
+        </div>
+      </div>
+    </div>
+    <!-- Card 3: Happiness -->
+    <div class="card" data-text="Your smile is my happiness. We've thousands of happy moments from those my best 3 are: number 3 when you did 110 squats just for me, number 2 the night of 2nd March at 22:00 (Russia) when you chose me as your boyfriend was the second best moment of mylife, and the most special one was my 29th May 2025 When my Jasimne writes me love letters changed my worst birthday to best birthday of mylife. Thank you for choosing me, Valerie. I promise to always bring happiness to your life. This is my Happiness Promise to you." data-emotion="Happiness">
+      <div class="card-inner">
+        <div class="card-front">
+          <img src="Valerie 7/Happiness.jpg" alt="Happiness Front Image">
+        </div>
+        <div class="card-back">
+          <img src="Valerie 7/Happiness.jpg" alt="Happiness Back Image">
+          <span class="emotion-label">Happiness</span>
+        </div>
+      </div>
+    </div>
+    <!-- Card 4: Passion -->
+    <div class="card" data-text="From clean-shave plans to 3-hour movies at theater, the song you associated with me to the nickname you put on Instagram for me, the day when we're talking about love or passion you want to be passionate even in old ages. Valerie, it’s our story, our life. I promise to be the one you always dreamed of. This is my Passionate Promise to you." data-emotion="Passion">
+      <div class="card-inner">
+        <div class="card-front">
+          <img src="Valerie 7/Passion.jpg" alt="Passion Front Image">
+        </div>
+        <div class="card-back">
+          <img src="Valerie 7/Passion.jpg" alt="Passion Back Image">
+          <span class="emotion-label">Passion</span>
+        </div>
+      </div>
+    </div>
+    <!-- Card 5: Loyalty -->
+    <div class="card" data-text="You are my loyal angel. I never doubted pf this, but the best moment was your besfriend's attraction, when you said—“How can a girl look at anyone else if she trusts her man?” I felt your soul.This day I melted for infront of your Loyalty Valerie, no one can touch me but you. My loyalty is only yours. This is my Loyalty Promise to you." data-emotion="Loyalty">
+      <div class="card-inner">
+        <div class="card-front">
+          <img src="Valerie 7/Loyalty.jpg" alt="Loyalty Front Image">
+        </div>
+        <div class="card-back">
+          <img src="Valerie 7/Loyalty.jpg" alt="Loyalty Back Image">
+          <span class="emotion-label">Loyalty</span>
+        </div>
+      </div>
+    </div>
+    <!-- Card 6: Trust -->
+    <div class="card" data-text="You trusted me despite the odds, even when you said (I don't like India and Inidans) but still trusted me. You called me your most trustworthy man and that means everything. Valerie, I’ll never break that bond. This is a promise from one soul to his soulmate—my.This is my Trust Promise to you." data-emotion="Trust">
+      <div class="card-inner">
+        <div class="card-front">
+          <img src="Valerie 7/Trust.jpg" alt="Trust Front Image">
+        </div>
+        <div class="card-back">
+          <img src="Valerie 7/Trust.jpg" alt="Trust Back Image">
+          <span class="emotion-label">Trust</span>
+        </div>
+      </div>
+    </div>
+    <!-- Card 7: Love -->
+    <div class="card" data-text="In every emotion: anger, doubt, or pain, you still call me your man. From sharing your trip to Kislovodsk even when you're upset of me, to doing 110 squats for me, your love never changed. You are my first and last love, Valerie. No one can ever take your place. This is my forever Love Promise to you." data-emotion="Love">
+      <div class="card-inner">
+        <div class="card-front">
+          <img src="Valerie 7/Love.jpg" alt="Love Front Image">
+        </div>
+        <div class="card-back">
+          <img src="Valerie 7/Love.jpg" alt="Love Back Image">
+          <span class="emotion-label">Love</span>
+        </div>
+      </div>
+    </div>
+    <!-- Card 8: Special Promise -->
+    <div class="card" data-text="Valerie, among all those promises I missed the most important promise of our love. It's my promise of getting married to you. I promise you to choose only you in all the circumstances and my family will always be spportive for our Marraige and I expect the same from you, marriage is a decision between both partners. Take out your pen and paper and write me a complete letter of your answer like Once I did for you, I'll be waiting for your response." data-emotion="Special Promise">
+      <div class="card-inner">
+        <div class="card-front">
+          <img src="Valerie 7/Special.jpg" alt="Special Promise Front Image">
+        </div>
+        <div class="card-back">
+          <img src="Valerie 7/Special.jpg" alt="Special Promise Back Image">
+          <span class="emotion-label">Special Promise</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fullscreen Display -->
+  <div class="fullscreen-display" id="fullscreen-display">
+    <div class="fullscreen-card">
+      <span class="emotion-title" id="emotion-title"></span>
+      <div class="emotion-text" id="emotion-text"></div>
+      <button class="exit-button" id="exit-button">Exit</button>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const audio = document.getElementById('bg-music');
+      const fullscreenDisplay = document.getElementById('fullscreen-display');
+      const emotionTitle = document.getElementById('emotion-title');
+      const emotionText = document.getElementById('emotion-text');
+      const exitButton = document.getElementById('exit-button');
+      let currentFlippedCard = null;
+
+      const cards = document.querySelectorAll('.card');
+      console.log('Number of cards found:', cards.length);
+
+      cards.forEach(card => {
+        card.addEventListener('click', (event) => {
+          console.log('Card clicked:', card);
+          event.stopPropagation();
+          if (!card.classList.contains('flipped')) {
+            card.classList.add('flipped');
+            const text = card.getAttribute('data-text');
+            const emotion = card.getAttribute('data-emotion');
+            emotionTitle.textContent = emotion;
+            emotionText.textContent = text;
+            fullscreenDisplay.classList.add('active');
+            if (currentFlippedCard && currentFlippedCard !== card) {
+              currentFlippedCard.classList.remove('flipped');
+            }
+            currentFlippedCard = card;
+          }
+        });
+      });
+
+      exitButton.addEventListener('click', () => {
+        fullscreenDisplay.classList.remove('active');
+        emotionTitle.textContent = '';
+        emotionText.textContent = '';
+        if (currentFlippedCard) {
+          currentFlippedCard.classList.remove('flipped');
+          currentFlippedCard = null;
+        }
+      });
+
+      document.querySelectorAll('.heart-shower').forEach(heart => {
+        heart.addEventListener('click', (event) => {
+          event.stopPropagation();
+          window.location.href = 'queen.html';
+        });
+      });
+
+      document.body.addEventListener('click', () => {
+        if (audio.paused || audio.muted) {
+          audio.muted = false;
+          audio.volume = 0.2;
+          audio.play().then(() => {
+            console.log('Audio playing successfully');
+          }).catch(error => {
+            console.error('Audio playback failed:', error.message);
+          });
+        }
+      }, { once: true });
+
+      console.log('Page loaded, attempting to load audio');
+      audio.load();
+      audio.play().then(() => {
+        console.log('Audio autoplay started (muted)');
+      }).catch(error => {
+        console.error('Audio autoplay failed:', error.message);
+      });
+    });
+  </script>
+</body>
+</html>

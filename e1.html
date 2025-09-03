@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Voice Notes Collection</title>
+  <link rel="icon" type="image/png" href="birthday tune\VP.png">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Emilys+Candy&family=Sail&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      background: linear-gradient(to bottom, #ff9a9e, #fad0c4, #d8b4fe);
+      min-height: 100vh;
+      overflow: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      font-family: 'Sail', cursive;
+      padding-bottom: 2rem;
+    }
+
+    .header {
+      text-align: center;
+      padding: 2rem 0;
+      z-index: 10;
+    }
+
+    .header h1 {
+      font-family: 'Emilys Candy', cursive;
+    }
+
+    .header p {
+      font-family: 'Sail', cursive;
+    }
+
+    .cd-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+      padding: 2rem;
+      justify-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      z-index: 15;
+    }
+
+    .cd-row-2 {
+      grid-template-columns: repeat(3, 1fr);
+      justify-content: center;
+    }
+
+    .cd-container {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .cd {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      position: relative;
+      animation: spin 5s linear infinite;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+      border: 5px solid #ccc;
+      overflow: hidden;
+    }
+
+    .cd.paused {
+      animation-play-state: paused;
+    }
+
+    .cd::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 30px;
+      height: 30px;
+      background: #333;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .cd-image {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: top center;
+      z-index: 16;
+    }
+
+    .play-pause-button {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(0deg);
+      width: 40px;
+      height: 40px;
+      background: #f472b6;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      z-index: 20;
+      box-shadow: 0 0 10px rgba(244, 114, 182, 0.7);
+      animation: counter-spin 5s linear infinite;
+    }
+
+    .play-pause-button.paused {
+      animation-play-state: paused;
+    }
+
+    .play-pause-button svg {
+      width: 20px;
+      height: 20px;
+      fill: #ffd700;
+    }
+
+    .music-waves {
+      position: absolute;
+      top: 0%;
+      left: 0%;
+      transform: translate(-50%, -50%);
+      z-index: 10;
+      display: none;
+    }
+
+    .music-waves.active {
+      display: block;
+    }
+
+    .wave {
+      position: absolute;
+      width: 220px;
+      height: 220px;
+      border: 2px solid #f8a5c2;
+      border-radius: 50%;
+      opacity: 0.6;
+      animation: wave 3s ease-out infinite;
+    }
+
+    .wave:nth-child(2) { animation-delay: 1s; }
+    .wave:nth-child(3) { animation-delay: 2s; }
+    .wave:nth-child(4) { animation-delay: 0.5s; }
+    .wave:nth-child(5) { animation-delay: 1.5s; }
+
+    canvas#waterfall {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 5; /* Behind CD grid and header */
+      display: none; /* Hidden by default */
+    }
+
+    canvas#waterfall.active {
+      display: block; /* Visible when active */
+    }
+
+  .heart-link {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    background-color: #f472b6;
+    z-index: 10;
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(244, 114, 182, 0.9), 0 0 25px rgba(255, 255, 255, 0.4);
+    animation: pulse 2s ease-in-out infinite, float 4s ease-in-out infinite;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+  }
+  .heart-link::before,
+  .heart-link::after {
+    content: '';
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background-color: #f472b6;
+    border-radius: 20px;
+    z-index: 10;
+    transition: background-color 0.3s ease;
+  }
+  .heart-link::before {
+    top: -20px;
+    left: 0;
+  }
+  .heart-link::after {
+    left: 20px;
+    top: 0;
+    z-index: 9; /* Ensure sparkle is behind the letter */
+  }
+  .heart-link:hover {
+    animation: small-pulse 0.7s infinite;
+    background-color: #ff0000;
+  }
+  .heart-link:hover::before,
+  .heart-link:hover::after {
+    background-color: #ff0000;
+  }
+  .heart-link span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(45deg);
+    font-family: 'Emilys Candy', cursive;
+    font-size: 25px;
+    color: #ffd700;
+    text-shadow: 0 0 5px rgb(201, 215, 4);
+    z-index: 11;
+    transition: transform 0.3s ease, color 0.3s ease;
+  }
+  .heart-link:hover span {
+    transform: translate(-50%, -50%) rotate(45deg) scale(1.2);
+    color: #facc15;
+  }
+  .heart-link.sparkle::after {
+    content: '';
+    position: absolute;
+    width: 120%;
+    height: 120%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.9) 10%, transparent 70%);
+    opacity: 0;
+    border-radius: 50%;
+    transform: scale(0);
+    z-index: 9;
+  }
+  .heart-link:hover.sparkle::after {
+    animation: sparkle 0.6s ease-out;
+  }
+  @keyframes pulse {
+    0% { transform: rotate(-45deg) scale(1); box-shadow: 0 0 15px rgba(244, 114, 182, 0.9), 0 0 25px rgba(255, 255, 255, 0.4); }
+    50% { transform: rotate(-45deg) scale(1.05); box-shadow: 0 0 20px rgba(244, 114, 182, 1), 0 0 30px rgba(255, 255, 255, 0.6); }
+    100% { transform: rotate(-45deg) scale(1); box-shadow: 0 0 15px rgba(244, 114, 182, 0.9), 0 0 25px rgba(255, 255, 255, 0.4); }
+  }
+  @keyframes small-pulse {
+    0% { transform: rotate(-45deg) scale(1); }
+    50% { transform: rotate(-45deg) scale(1.05); }
+    100% { transform: rotate(-45deg) scale(1); }
+  }
+  @keyframes float {
+    0% { transform: rotate(-45deg) translateY(0); }
+    50% { transform: rotate(-45deg) translateY(-10px); }
+    100% { transform: rotate(-45deg) translateY(0); }
+  }
+  @keyframes sparkle {
+    0% { transform: scale(0); opacity: 0.9; }
+    100% { transform: scale(1.8); opacity: 0; }
+  }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @keyframes counter-spin {
+      0% { transform: translate(-50%, -50%) rotate(360deg); }
+      100% { transform: translate(-50%, -50%) rotate(0deg); }
+    }
+
+    @keyframes wave {
+      0% { transform: scale(1); opacity: 0.6; }
+      100% { transform: scale(2.5); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="waterfall"></canvas>
+
+  <audio id="voice-note-1" preload="auto">
+    <source src="Songs/Perfect.mp3" type="audio/mp3">
+    Your browser does not support the audio element.
+  </audio>
+  <audio id="voice-note-2" preload="auto">
+    <source src="Songs/Love Me Like You Do.mp3" type="audio/mp3">
+    Your browser does not support the audio element.
+  </audio>
+  <audio id="voice-note-3" preload="auto">
+    <source src="Songs/Die With A Smile.mp3" type="audio/mp3">
+    Your browser does not support the audio element.
+  </audio>
+  <audio id="voice-note-4" preload="auto">
+    <source src="Songs/Confessa.mp3" type="audio/mp3">
+    Your browser does not support the audio element.
+  </audio>
+  <audio id="voice-note-5" preload="auto">
+    <source src="Songs/Tum Hi Ho.mp3" type="audio/mp3">
+    Your browser does not support the audio element.
+  </audio>
+  <audio id="voice-note-6" preload="auto">
+    <source src="Songs/Cheri Cheri Lady.mp3" type="audio/mp3">
+    Your browser does not support the audio element.
+  </audio>
+  <audio id="voice-note-7" preload="auto">
+    <source src="Songs/Insatiable.mp3" type="audio/mp3">
+    Your browser does not support the audio element.
+  </audio>
+
+  <div class="header">
+    <h1 class="text-5xl md:text-7xl text-pink-600 font-[Emilys_Candy] drop-shadow-lg">E — Essence of Perfection</h1>
+    <p class="text-xl md:text-2xl mt-2 text-white font-light">A special collection of songs devoted from my heart to yours, like the word perfect was just invented for my Miss Perfect.</p>
+  </div>
+
+  <div class="cd-grid">
+    <div class="cd-container">
+      <div class="cd" id="cd-1">
+        <img src="birthday tune/CD.jpg" alt="CD Art 1" class="cd-image" />
+      </div>
+      <div class="play-pause-button" id="play-button-1" onclick="togglePlayPause(1)">
+        <svg id="play-icon-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path d="M8 5v14l11-7z" />
+        </svg>
+      </div>
+      <div class="music-waves" id="waves-1">
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+      </div>
+    </div>
+    <div class="cd-container">
+      <div class="cd" id="cd-2">
+        <img src="birthday tune/CD.jpg" alt="CD Art 2" class="cd-image" />
+      </div>
+      <div class="play-pause-button" id="play-button-2" onclick="togglePlayPause(2)">
+        <svg id="play-icon-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path d="M8 5v14l11-7z" />
+        </svg>
+      </div>
+      <div class="music-waves" id="waves-2">
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+      </div>
+    </div>
+    <div class="cd-container">
+      <div class="cd" id="cd-3">
+        <img src="birthday tune/CD.jpg" alt="CD Art 3" class="cd-image" />
+      </div>
+      <div class="play-pause-button" id="play-button-3" onclick="togglePlayPause(3)">
+        <svg id="play-icon-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path d="M8 5v14l11-7z" />
+        </svg>
+      </div>
+      <div class="music-waves" id="waves-3">
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+      </div>
+    </div>
+    <div class="cd-container">
+      <div class="cd" id="cd-4">
+        <img src="birthday tune/CD.jpg" alt="CD Art 4" class="cd-image" />
+      </div>
+      <div class="play-pause-button" id="play-button-4" onclick="togglePlayPause(4)">
+        <svg id="play-icon-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path d="M8 5v14l11-7z" />
+        </svg>
+      </div>
+      <div class="music-waves" id="waves-4">
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cd-grid cd-row-2">
+    <div class="cd-container">
+      <div class="cd" id="cd-5">
+        <img src="birthday tune/CD.jpg" alt="CD Art 5" class="cd-image" />
+      </div>
+      <div class="play-pause-button" id="play-button-5" onclick="togglePlayPause(5)">
+        <svg id="play-icon-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path d="M8 5v14l11-7z" />
+        </svg>
+      </div>
+      <div class="music-waves" id="waves-5">
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+      </div>
+    </div>
+    <div class="cd-container">
+      <div class="cd" id="cd-6">
+        <img src="birthday tune/CD.jpg" alt="CD Art 6" class="cd-image" />
+      </div>
+      <div class="play-pause-button" id="play-button-6" onclick="togglePlayPause(6)">
+        <svg id="play-icon-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path d="M8 5v14l11-7z" />
+        </svg>
+      </div>
+      <div class="music-waves" id="waves-6">
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+      </div>
+    </div>
+    <div class="cd-container">
+      <div class="cd" id="cd-7">
+        <img src="birthday tune/CD.jpg" alt="CD Art 7" class="cd-image" />
+      </div>
+      <div class="play-pause-button" id="play-button-7" onclick="togglePlayPause(7)">
+        <svg id="play-icon-7" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path d="M8 5v14l11-7z" />
+        </svg>
+      </div>
+      <div class="music-waves" id="waves-7">
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+      </div>
+    </div>
+  </div>
+
+  <a href="r.html" class="heart-link" onclick="triggerConfetti()">
+    <span>R</span>
+  </a>
+
+  <script>
+    const audios = Array.from({ length: 7 }, (_, i) => document.getElementById(`voice-note-${i + 1}`));
+    const playIcons = Array.from({ length: 7 }, (_, i) => document.getElementById(`play-icon-${i + 1}`));
+    const waves = Array.from({ length: 7 }, (_, i) => document.getElementById(`waves-${i + 1}`));
+    const cds = Array.from({ length: 7 }, (_, i) => document.getElementById(`cd-${i + 1}`));
+    const playButtons = Array.from({ length: 7 }, (_, i) => document.getElementById(`play-button-${i + 1}`));
+    let currentAudio = null;
+
+    // Waterfall effect
+    var waterfallCanvas = function(c, cw, ch) {
+      var _this = this;
+      this.c = c;
+      this.ctx = c.getContext('2d');
+      this.cw = cw;
+      this.ch = ch;
+      this.particles = [];
+      this.particleRate = 6;
+      this.gravity = 0.15;
+      this.isAnimating = false;
+      this.animationFrameId = null;
+
+      this.init = function() {
+        this.loop();
+      };
+
+      this.Particle = function() {
+        var newWidth = ~~(Math.random() * 20 + 1);
+        var newHeight = ~~(Math.random() * 45 + 1);
+        this.x = ~~(Math.random() * (_this.cw - 20)) + 10;
+        this.y = -newHeight;
+        this.vx = 0;
+        this.vy = 0;
+        this.width = newWidth;
+        this.height = newHeight;
+        this.hue = ~~(Math.random() * 20) + 200; // Blue hues to match theme
+        this.saturation = ~~(Math.random() * 30) + 50;
+        this.lightness = ~~(Math.random() * 30) + 40;
+      };
+
+      this.Particle.prototype.update = function() {
+        this.vy += _this.gravity;
+        this.x += this.vx;
+        this.y += this.vy;
+      };
+
+      this.Particle.prototype.render = function() {
+        _this.ctx.strokeStyle = `hsla(${this.hue}, ${this.saturation}%, ${this.lightness}%, .05)`;
+        _this.ctx.beginPath();
+        _this.ctx.moveTo(this.x, this.y);
+        _this.ctx.lineTo(this.x, this.y + this.height);
+        _this.ctx.lineWidth = this.width / 2;
+        _this.ctx.lineCap = 'round';
+        _this.ctx.stroke();
+      };
+
+      this.Particle.prototype.renderBubble = function() {
+        _this.ctx.fillStyle = `hsla(${this.hue}, ${this.saturation}%, ${this.lightness}%, .3)`;
+        _this.ctx.beginPath();
+        _this.ctx.arc(this.x + this.width / 2, _this.ch - 20 - ~~(Math.random() * 10), ~~(Math.random() * 8 + 1), 0, Math.PI * 2);
+        _this.ctx.fill();
+      };
+
+      this.createParticles = function() {
+        for (let i = 0; i < this.particleRate; i++) {
+          this.particles.push(new this.Particle());
+        }
+      };
+
+      this.removeParticles = function() {
+        for (let i = this.particles.length - 1; i >= 0; i--) {
+          var p = this.particles[i];
+          if (p.y > _this.ch - 20 - p.height) {
+            p.renderBubble();
+            _this.particles.splice(i, 1);
+          }
+        }
+      };
+
+      this.updateParticles = function() {
+        for (let p of this.particles) p.update();
+      };
+
+      this.renderParticles = function() {
+        for (let p of this.particles) p.render();
+      };
+
+      this.clearCanvas = function() {
+        this.ctx.globalCompositeOperation = 'destination-out';
+        this.ctx.fillStyle = 'rgba(255,255,255,.06)';
+        this.ctx.fillRect(0, 0, this.cw, this.ch);
+        this.ctx.globalCompositeOperation = 'lighter';
+      };
+
+      this.loop = function() {
+        if (this.isAnimating) {
+          this.clearCanvas();
+          this.createParticles();
+          this.updateParticles();
+          this.renderParticles();
+          this.removeParticles();
+          this.animationFrameId = requestAnimationFrame(this.loop.bind(this));
+        }
+      };
+
+      this.start = function() {
+        if (!this.isAnimating) {
+          this.isAnimating = true;
+          this.c.style.display = 'block';
+          this.loop();
+        }
+      };
+
+      this.stop = function() {
+        this.isAnimating = false;
+        cancelAnimationFrame(this.animationFrameId);
+        this.c.style.display = 'none';
+        this.particles = [];
+        this.ctx.clearRect(0, 0, this.cw, this.ch);
+      };
+    };
+
+    var canvas = document.getElementById('waterfall');
+    var cw = canvas.width = window.innerWidth;
+    var ch = canvas.height = window.innerHeight;
+    var waterfall = new waterfallCanvas(canvas, cw, ch);
+
+    function togglePlayPause(index) {
+      const audio = audios[index - 1];
+      const playIcon = playIcons[index - 1];
+      const wave = waves[index - 1];
+      const cd = cds[index - 1];
+      const playButton = playButtons[index - 1];
+
+      // Pause all other audios and reset their states
+      audios.forEach((a, i) => {
+        if (i !== index - 1 && !a.paused) {
+          a.pause();
+          playIcons[i].innerHTML = '<path d="M8 5v14l11-7z" />';
+          waves[i].classList.remove('active');
+          cds[i].classList.add('paused');
+          playButtons[i].classList.add('paused');
+        }
+      });
+
+      if (audio.paused) {
+        if (currentAudio && !currentAudio.paused) {
+          currentAudio.pause();
+        }
+        audio.play();
+        currentAudio = audio;
+        playIcon.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
+        wave.classList.add('active');
+        cd.classList.remove('paused');
+        playButton.classList.remove('paused');
+      } else {
+        audio.pause();
+        currentAudio = null;
+        playIcon.innerHTML = '<path d="M8 5v14l11-7z" />';
+        wave.classList.remove('active');
+        cd.classList.add('paused');
+        playButton.classList.add('paused');
+      }
+
+      // Check if any audio is playing to toggle waterfall
+      const isAnyPlaying = audios.some(a => !a.paused);
+      if (isAnyPlaying) {
+        waterfall.start();
+      } else {
+        waterfall.stop();
+      }
+    }
+
+    // Add event listeners to audio elements for play, pause, and ended events
+    audios.forEach(audio => {
+      audio.addEventListener('play', () => {
+        if (audios.some(a => !a.paused)) {
+          waterfall.start();
+        }
+      });
+      audio.addEventListener('pause', () => {
+        if (!audios.some(a => !a.paused)) {
+          waterfall.stop();
+        }
+      });
+      audio.addEventListener('ended', () => {
+        if (!audios.some(a => !a.paused)) {
+          waterfall.stop();
+        }
+      });
+    });
+
+    // Initialize waterfall as stopped
+    waterfall.stop();
+  </script>
+</body>
+</html>
